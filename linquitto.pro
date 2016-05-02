@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = linquitto
 TEMPLATE = app
 
+CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp
@@ -18,3 +19,14 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+
+unix:!macx: LIBS += -L$$PWD/../paho.mqtt.cpp/lib/ -lmqttpp
+
+INCLUDEPATH += $$PWD/../paho.mqtt.cpp/src
+DEPENDPATH += $$PWD/../paho.mqtt.cpp/src
+
+unix:!macx: LIBS += -L$$PWD/../paho.mqtt.c/build/output/ -lpaho-mqtt3a
+
+INCLUDEPATH += $$PWD/../paho.mqtt.c/build/output
+DEPENDPATH += $$PWD/../paho.mqtt.c/build/output

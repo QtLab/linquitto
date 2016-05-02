@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <memory>
+#include "mqtt/client.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +23,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     bool m_connected;
+    std::unique_ptr<mqtt::client> m_client;
 };
 
 #endif // MAINWINDOW_H
