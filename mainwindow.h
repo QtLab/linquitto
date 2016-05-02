@@ -15,8 +15,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void switchConnection();
+
 private:
     Ui::MainWindow *ui;
+    bool m_connected;
 };
 
 #endif // MAINWINDOW_H
