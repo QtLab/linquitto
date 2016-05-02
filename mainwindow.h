@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <memory>
-#include "mqtt/client.h"
+
+#include "connection.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,11 +20,12 @@ public:
 
 public slots:
     void switchConnection();
+    void addLog(QString message);
 
 private:
     Ui::MainWindow *ui;
     bool m_connected;
-    std::unique_ptr<mqtt::client> m_client;
+    Connection m_connection;
 };
 
 #endif // MAINWINDOW_H

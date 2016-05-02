@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>606</width>
-    <height>300</height>
+    <height>393</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,16 @@
       <widget class="QTextEdit" name="portEdit"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QListWidget" name="logList">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>401</width>
+      <height>261</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
