@@ -15,10 +15,16 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    connection.cpp
+    connection.cpp \
+    asyncconnection.cpp \
+    defaultactionlistener.cpp \
+    debugcallback.cpp
 
 HEADERS  += mainwindow.h \
-    connection.h
+    connection.h \
+    asyncconnection.h \
+    defaultactionlistener.h \
+    debugcallback.h
 
 FORMS    += mainwindow.ui
 

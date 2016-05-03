@@ -11,6 +11,7 @@ class Connection : public QObject, public mqtt::callback
     Q_OBJECT
 public:
     explicit Connection(QObject *parent = 0);
+    ~Connection();
 
 signals:
     void connectionLost(QString cause);

@@ -1,4 +1,5 @@
 #include "connection.h"
+#include "qdebug.h"
 
 const std::string ADDRESS("tcp://localhost:1883");
 const std::string CLIENTID("SyncPublisher");
@@ -7,6 +8,11 @@ Connection::Connection(QObject *parent) : QObject(parent),
     m_client(ADDRESS, CLIENTID)
 {
     m_client.set_callback(*this);
+}
+
+Connection::~Connection()
+{
+    qDebug() << "Connection dtor";
 }
 
 void Connection::connectWithServer()

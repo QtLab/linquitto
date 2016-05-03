@@ -1,6 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <thread>
+
+#include "mqtt/async_client.h"
+
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -9,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(switchConnection()));
-    connect(&m_connection, SIGNAL(logIt(QString)), this, SLOT(addLog(QString)));
+    connect(&m_connection, SIGNAL(connected()), this, SLOT(connectionEstablished()));
+    connect(&m_connection, SIGNAL(disconnected()), this, SLOT(disconnected()));
 }
 
 MainWindow::~MainWindow()
@@ -20,16 +27,26 @@ MainWindow::~MainWindow()
 void MainWindow::switchConnection()
 {
     m_connected = !m_connected; // switch
-    if(m_connected) {
-        ui->connectButton->setText("disconnect");
-        m_connection.connectWithServer();
-    } else {
-        ui->connectButton->setText("connect");
+    if(m_connection.isConnectedWithServer()) {
         m_connection.disconnectFromServer();
+    } else {
+        m_connection.connectWithServer();
     }
 }
 
 void MainWindow::addLog(QString message)
 {
     ui->logList->addItem(message);
+}
+
+void MainWindow::connectionEstablished()
+{
+    ui->connectButton->setText("disconnect");
+    ui->logList->addItem("Connected with Server");
+}
+
+void MainWindow::disconnected()
+{
+    ui->connectButton->setText("connect");
+    ui->logList->addItem("Disconnected from Server.");
 }
