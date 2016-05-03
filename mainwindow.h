@@ -29,7 +29,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    bool m_connected;
     AsyncConnection m_connection;
     //DefaultActionListener m_defaultListener;
     DebugCallback m_debugCallback;

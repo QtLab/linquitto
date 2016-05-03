@@ -10,7 +10,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_connected(false),
     m_connection()
 {
     ui->setupUi(this);
@@ -26,7 +25,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::switchConnection()
 {
-    m_connected = !m_connected; // switch
     if(m_connection.isConnectedWithServer()) {
         m_connection.disconnectFromServer();
     } else {
