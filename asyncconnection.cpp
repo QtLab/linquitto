@@ -9,10 +9,14 @@ AsyncConnection::AsyncConnection(QObject *parent) :
     QObject(parent),
     m_client(ADDRESS, CLIENTID),
     m_connectListener(QString("connecting")),
-    m_disconnectListener(QString("disconnecting"))
+    m_disconnectListener(QString("disconnecting")),
+    m_publishListener(QString("publishing")),
+    m_subscribeListener(QString("subscribing"))
 {
     connect(&m_connectListener, SIGNAL(success()), this, SIGNAL(connected()));
     connect(&m_disconnectListener, SIGNAL(success()), this, SIGNAL(disconnected()));
+    connect(&m_publishListener, SIGNAL(success()), this, SIGNAL(published()));
+    connect(&m_subscribeListener, SIGNAL(success()), this, SIGNAL(subscribed()));
 }
 
 void AsyncConnection::connectWithServer()
@@ -36,7 +40,24 @@ void AsyncConnection::disconnectFromServer()
     }
 }
 
-void AsyncConnection::sendMessage(const QString &message)
+void AsyncConnection::publishMessage(const QString &topic, const QString &message)
 {
-    qDebug() << "AsyncConnection::sendMessage: " << message;
+    if(m_client.is_connected()) {
+        qDebug() << "AsyncConnection::sendMessage: " << topic << message;
+        mqtt::message_ptr pubmsg =
+                std::make_shared<mqtt::message>(message.toStdString().c_str());
+        m_client.publish(topic.toStdString(), pubmsg, nullptr, m_publishListener);
+    } else {
+        qDebug() << "AsyncConnection::sendMessage: failed, not connected!";
+    }
+}
+
+void AsyncConnection::subscribeToTopic(const QString &topic)
+{
+    if(m_client.is_connected()) {
+        qDebug() << "AsyncConnection::subscribeToTopic: " << topic;
+        m_client.subscribe(topic.toStdString(), 1, nullptr, m_subscribeListener);
+    } else {
+        qDebug() << "AsyncConnection::subscribeToTopic: failed, not connected!";
+    }
 }

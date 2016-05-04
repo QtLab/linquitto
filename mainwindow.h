@@ -26,6 +26,10 @@ public slots:
     void addLog(QString message);
     void connectionEstablished();
     void disconnected();
+    void connectionHasPublished();
+    void connectionHasSubscribed();
+    void onSubscribe();
+    void onPublish();
 
 private:
     Ui::MainWindow *ui;

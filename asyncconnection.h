@@ -16,12 +16,15 @@ public:
 
     void connectWithServer();
     void disconnectFromServer();
-    void sendMessage(QString const &message);
+    void publishMessage(QString const &topic, QString const &message);
+    void subscribeToTopic(QString const &topic);
     bool isConnectedWithServer() const {return m_client.is_connected();}
 
 signals:
     void connected();
     void disconnected();
+    void published();
+    void subscribed();
 
 public slots:
 
@@ -29,7 +32,8 @@ private:
     mqtt::async_client m_client;
     DefaultActionListener m_connectListener;
     DefaultActionListener m_disconnectListener;
-
+    DefaultActionListener m_publishListener;
+    DefaultActionListener m_subscribeListener;
 };
 
 #endif // ASYNCCONNECTION_H

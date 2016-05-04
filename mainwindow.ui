@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>606</width>
+    <width>888</width>
     <height>393</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>401</width>
+      <width>431</width>
       <height>31</height>
      </rect>
     </property>
@@ -44,10 +44,144 @@
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>401</width>
+      <width>281</width>
       <height>261</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="publishGroup">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>50</y>
+      <width>201</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Publish</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <widget class="QLabel" name="topicLabel">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>30</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Topic:</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="topicEdit">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>50</y>
+       <width>180</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="messageLabel">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>90</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Message:</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="messageEdit">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>110</y>
+       <width>180</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="publishButton">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>150</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>publish</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="subscribeBox">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>50</y>
+      <width>310</width>
+      <height>265</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Subscribe</string>
+    </property>
+    <widget class="QLabel" name="subscribeTopicLabel">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>30</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Topic:</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="subscribeTopicEdit">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>50</y>
+       <width>180</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="subscribeButton">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>50</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>subscribe</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="messageList">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>85</y>
+       <width>295</width>
+       <height>170</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -55,7 +189,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>606</width>
+     <width>888</width>
      <height>25</height>
     </rect>
    </property>
