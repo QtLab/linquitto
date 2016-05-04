@@ -7,6 +7,10 @@
 
 #include <QDebug>
 
+namespace linquitto {
+const QString emptyFill("...");
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -24,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_connection, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(&m_connection, SIGNAL(published()), this, SLOT(connectionHasPublished()));
     connect(&m_connection, SIGNAL(subscribed()), this, SLOT(connectionHasSubscribed()));
+    connect(&m_connection, SIGNAL(messageArrived(QString,QString)),
+            this, SLOT(messageArrived(QString,QString)));
+    connect(&m_connection, SIGNAL(connectionLost(QString)),
+            this, SLOT(connectionLost(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -70,9 +78,30 @@ void MainWindow::connectionHasSubscribed()
     ui->logList->addItem("Subscribed to topic " + topic);
 }
 
+void MainWindow::connectionLost(QString cause)
+{
+    ui->logList->addItem("Connection lost: " + cause);
+}
+
+void MainWindow::messageArrived(QString topic, QString message)
+{
+    ui->messageList->addItem("(" + topic + ") " + message);
+}
+
 void MainWindow::onSubscribe()
 {
     qDebug() << "subscribe" << "clicked";
+    const QString topic = ui->subscribeTopicEdit->toPlainText();
+
+    // test if topic is not filled
+    if(topic.isEmpty() || topic == linquitto::emptyFill) {
+        qDebug() << "MainWindow::onSubscribe: topic is empty!";
+        ui->topicEdit->setPlainText(linquitto::emptyFill);
+        return;
+    }
+
+    // subscribe only when topic is filled:
+    m_connection.subscribeToTopic(topic);
 }
 
 void MainWindow::onPublish()
@@ -80,18 +109,18 @@ void MainWindow::onPublish()
     qDebug() << "publish" << "clicked.";
     const QString topic = ui->topicEdit->toPlainText();
     const QString message = ui->messageEdit->toPlainText();
-    const QString emptyFill("...");
+
 
     // test if topic and message are filled:
-    if(topic.isEmpty() || topic == emptyFill) {
+    if(topic.isEmpty() || topic == linquitto::emptyFill) {
         qDebug() << "MainWindow::onPublish: topic is empty!";
-        ui->topicEdit->setPlainText(emptyFill);
+        ui->topicEdit->setPlainText(linquitto::emptyFill);
         return;
     }
 
-    if(message.isEmpty() || message == emptyFill) {
+    if(message.isEmpty() || message == linquitto::emptyFill) {
         qDebug() << "MainWindow::onPublish: message is empty!";
-        ui->messageEdit->setPlainText(emptyFill);
+        ui->messageEdit->setPlainText(linquitto::emptyFill);
         return;
     }
 

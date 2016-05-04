@@ -1,17 +1,20 @@
-#ifndef DEBUGCALLBACK_H
-#define DEBUGCALLBACK_H
+#ifndef DEFAULTCALLBACK_H
+#define DEFAULTCALLBACK_H
 
 #include <QObject>
 
 #include <mqtt/callback.h>
 
-class DebugCallback : public QObject, public mqtt::callback
+class DefaultCallback : public QObject, public mqtt::callback
 {
     Q_OBJECT
 public:
-    explicit DebugCallback(QObject *parent = 0);
+    explicit DefaultCallback(QObject *parent = 0);
 
 signals:
+    void connectionLost(QString cause);
+    void messageArrived(QString topic, QString message);
+    void deliveryComplete();
 
 public slots:
 
@@ -22,4 +25,4 @@ public:
     void delivery_complete(mqtt::idelivery_token_ptr tok);
 };
 
-#endif // DEBUGCALLBACK_H
+#endif // DEFAULTCALLBACK_H

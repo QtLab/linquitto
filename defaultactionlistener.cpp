@@ -21,10 +21,10 @@ void DefaultActionListener::on_success(const mqtt::itoken &asyncActionToken)
 {
     qDebug() << "DefaultActionListener::on_success";
     if(asyncActionToken.is_complete()) {
-        qDebug() << "on_success: "
+        qDebug() << "  "
                  << m_actionDescription << " is complete.";
     } else {
-        qDebug() << "on_success: "
+        qDebug() << "  "
                  << m_actionDescription << " is not complete yet.";
     }
     emit success();

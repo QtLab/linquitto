@@ -6,6 +6,7 @@
 #include <mqtt/async_client.h>
 
 #include "defaultactionlistener.h"
+#include "defaultcallback.h"
 
 class AsyncConnection : public QObject
 {
@@ -25,6 +26,8 @@ signals:
     void disconnected();
     void published();
     void subscribed();
+    void messageArrived(QString topic, QString message);
+    void connectionLost(QString cause);
 
 public slots:
 
@@ -34,6 +37,8 @@ private:
     DefaultActionListener m_disconnectListener;
     DefaultActionListener m_publishListener;
     DefaultActionListener m_subscribeListener;
+
+    DefaultCallback m_callback;
 };
 
 #endif // ASYNCCONNECTION_H

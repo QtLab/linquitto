@@ -11,12 +11,18 @@ AsyncConnection::AsyncConnection(QObject *parent) :
     m_connectListener(QString("connecting")),
     m_disconnectListener(QString("disconnecting")),
     m_publishListener(QString("publishing")),
-    m_subscribeListener(QString("subscribing"))
+    m_subscribeListener(QString("subscribing")),
+    m_callback()
 {
     connect(&m_connectListener, SIGNAL(success()), this, SIGNAL(connected()));
     connect(&m_disconnectListener, SIGNAL(success()), this, SIGNAL(disconnected()));
     connect(&m_publishListener, SIGNAL(success()), this, SIGNAL(published()));
     connect(&m_subscribeListener, SIGNAL(success()), this, SIGNAL(subscribed()));
+    connect(&m_callback, SIGNAL(connectionLost(QString)),
+            this, SIGNAL(connectionLost(QString)));
+    connect(&m_callback, SIGNAL(messageArrived(QString,QString)),
+            this, SIGNAL(messageArrived(QString,QString)));
+    m_client.set_callback(m_callback);
 }
 
 void AsyncConnection::connectWithServer()
