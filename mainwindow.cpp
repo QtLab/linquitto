@@ -59,12 +59,18 @@ void MainWindow::addLog(QString message)
 void MainWindow::connectionEstablished()
 {
     ui->connectButton->setText("disconnect");
+    ui->subscribeButton->setEnabled(true);
+    ui->publishButton->setEnabled(true);
     ui->logList->addItem("Connected with Server");
 }
 
 void MainWindow::disconnected()
 {
     ui->connectButton->setText("connect");
+    ui->subscribeButton->setEnabled(false);
+    ui->publishButton->setEnabled(false);
+    ui->topicCombo->clear();
+    ui->unsubscribeButton->setEnabled(false);
     ui->logList->addItem("Disconnected from Server.");
 }
 
@@ -100,6 +106,9 @@ void MainWindow::connectionHasUnsubscribed(QString topic)
 void MainWindow::connectionLost(QString cause)
 {
     ui->logList->addItem("Connection lost: " + cause);
+    ui->connectButton->setText("connect");
+    ui->subscribeButton->setEnabled(false);
+    ui->publishButton->setEnabled(false);
 }
 
 void MainWindow::messageArrived(QString topic, QString message)

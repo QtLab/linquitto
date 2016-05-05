@@ -7,52 +7,27 @@
     <x>0</x>
     <y>0</y>
     <width>888</width>
-    <height>393</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>431</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="connectButton">
-       <property name="text">
-        <string>Connect</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="addressEdit"/>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="portEdit"/>
-     </item>
-    </layout>
-   </widget>
    <widget class="QListWidget" name="logList">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
+      <x>230</x>
+      <y>100</y>
       <width>281</width>
-      <height>261</height>
+      <height>341</height>
      </rect>
     </property>
    </widget>
    <widget class="QGroupBox" name="publishGroup">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>20</x>
       <y>50</y>
       <width>201</width>
       <height>191</height>
@@ -111,10 +86,13 @@
      </property>
     </widget>
     <widget class="QPushButton" name="publishButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>150</y>
+       <x>80</x>
+       <y>160</y>
        <width>99</width>
        <height>27</height>
       </rect>
@@ -128,9 +106,9 @@
     <property name="geometry">
      <rect>
       <x>530</x>
-      <y>-6</y>
+      <y>50</y>
       <width>310</width>
-      <height>321</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="title">
@@ -140,7 +118,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>20</y>
+       <y>30</y>
        <width>67</width>
        <height>17</height>
       </rect>
@@ -153,17 +131,20 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>40</y>
+       <y>50</y>
        <width>180</width>
        <height>28</height>
       </rect>
      </property>
     </widget>
     <widget class="QPushButton" name="subscribeButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>40</y>
+       <y>50</y>
        <width>99</width>
        <height>27</height>
       </rect>
@@ -178,7 +159,7 @@
        <x>5</x>
        <y>150</y>
        <width>295</width>
-       <height>170</height>
+       <height>241</height>
       </rect>
      </property>
     </widget>
@@ -186,7 +167,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>80</y>
+       <y>90</y>
        <width>180</width>
        <height>27</height>
       </rect>
@@ -212,7 +193,7 @@
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>80</y>
+       <y>90</y>
        <width>99</width>
        <height>27</height>
       </rect>
@@ -221,6 +202,58 @@
       <string>unsubscribe</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="connectButton">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>5</y>
+      <width>85</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Connect</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>80</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Log:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Server:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="serverLabel">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>10</y>
+      <width>151</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>tcp://localhost:1883</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
