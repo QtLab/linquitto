@@ -28,9 +28,11 @@ public slots:
     void disconnected();
     void connectionHasPublished();
     void connectionHasSubscribed();
+    void connectionHasUnsubscribed(QString topic);
     void connectionLost(QString cause);
     void messageArrived(QString topic, QString message);
     void onSubscribe();
+    void onUnsubscribe();
     void onPublish();
 
 private:

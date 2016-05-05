@@ -12,12 +12,15 @@ AsyncConnection::AsyncConnection(QObject *parent) :
     m_disconnectListener(QString("disconnecting")),
     m_publishListener(QString("publishing")),
     m_subscribeListener(QString("subscribing")),
+    m_unsubscribeListener(),
     m_callback()
 {
     connect(&m_connectListener, SIGNAL(success()), this, SIGNAL(connected()));
     connect(&m_disconnectListener, SIGNAL(success()), this, SIGNAL(disconnected()));
     connect(&m_publishListener, SIGNAL(success()), this, SIGNAL(published()));
     connect(&m_subscribeListener, SIGNAL(success()), this, SIGNAL(subscribed()));
+    connect(&m_unsubscribeListener, SIGNAL(success(QString)),
+            this, SIGNAL(unsubscribed(QString)));
     connect(&m_callback, SIGNAL(connectionLost(QString)),
             this, SIGNAL(connectionLost(QString)));
     connect(&m_callback, SIGNAL(messageArrived(QString,QString)),
@@ -65,5 +68,15 @@ void AsyncConnection::subscribeToTopic(const QString &topic)
         m_client.subscribe(topic.toStdString(), 1, nullptr, m_subscribeListener);
     } else {
         qDebug() << "AsyncConnection::subscribeToTopic: failed, not connected!";
+    }
+}
+
+void AsyncConnection::unsubscribeFromTopic(const QString &topic)
+{
+    if(m_client.is_connected()) {
+        qDebug() << "AsyncConnection::unsubscribeFromTopic: " << topic;
+        m_client.unsubscribe(topic.toStdString(), nullptr, m_unsubscribeListener);
+    } else {
+        qDebug() << "AsyncConnection::unsubscribeFromTopic: failed, not connected!";
     }
 }

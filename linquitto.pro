@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     asyncconnection.cpp \
     defaultactionlistener.cpp \
     debugcallback.cpp \
-    defaultcallback.cpp
+    defaultcallback.cpp \
+    unsubscribeactionlistener.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
     asyncconnection.h \
     defaultactionlistener.h \
     debugcallback.h \
-    defaultcallback.h
+    defaultcallback.h \
+    unsubscribeactionlistener.h
 
 FORMS    += mainwindow.ui
 
