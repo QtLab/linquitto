@@ -13,6 +13,10 @@ namespace Ui {
 class MainWindow;
 }
 
+/*!
+ * \brief The MainWindow class builds and connects the UI
+ * User interaction is dispatched from here to the appropriate methods
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

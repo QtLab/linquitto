@@ -11,6 +11,10 @@ namespace linquitto {
 const QString emptyFill("...");
 }
 
+/*!
+ * \brief MainWindow::MainWindow creates the instance, builds the ui and connects signals/slots
+ * \param parent
+ */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -19,7 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // connect the buttons
-    connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(switchConnection()));
+    // TODO: change the SIGNAL/SLOT macro calls to function pointer,
+    //       since the compiler can now better check if the method signatures are compatible
+    connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::switchConnection);
+    //connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(switchConnection()));
     connect(ui->publishButton, SIGNAL(clicked()), this, SLOT(onPublish()));
     connect(ui->subscribeButton, SIGNAL(clicked()), this, SLOT(onSubscribe()));
     connect(ui->unsubscribeButton, SIGNAL(clicked()), this, SLOT(onUnsubscribe()));
@@ -98,7 +105,7 @@ void MainWindow::connectionHasUnsubscribed(QString topic)
         ui->topicCombo->removeItem(index);
     }
     if(ui->topicCombo->count() == 0) {
-        // When nothing to unsubscribe from disable the button
+        // When there is nothing to unsubscribe from, disable the button.
         ui->unsubscribeButton->setEnabled(false);
     }
 }
@@ -137,7 +144,7 @@ void MainWindow::onUnsubscribe()
     qDebug() << "unsubscribe" << "clicked";
 
     if(ui->topicCombo->count() == 0) {
-        // TODO: throw fitting exception
+        // TODO: throw appropriate exception
         qDebug() << "Nothing to unsubscribe from, this should not happen!";
         return;
     }
@@ -146,7 +153,7 @@ void MainWindow::onUnsubscribe()
     const QString topic = ui->topicCombo->currentText();
     if(topic.isEmpty()) {
         qDebug() << "topic for unsubcribe is empty, should not happen!";
-        // TODO: throw fitting exception, cause this should really not happen.
+        // TODO: throw appropriate exception, cause this should really not happen.
         return;
     }
 
