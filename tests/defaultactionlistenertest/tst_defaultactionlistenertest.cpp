@@ -6,10 +6,8 @@
 
 #include "../../defaultactionlistener.h"
 
-class TokenDummy : public mqtt::itoken
+class DummyToken : public mqtt::itoken
 {
-
-
     // itoken interface
 public:
     mqtt::iaction_listener *get_action_callback() const {return nullptr;}
@@ -46,7 +44,7 @@ void Defaultactionlistenertest::emitFailure()
 {
     DefaultActionListener listener("Test");
     QSignalSpy spy(&listener, SIGNAL(failure()));
-    const TokenDummy token;
+    const DummyToken token;
     listener.on_failure(token);
     QVERIFY2(spy.count() == 1, "Failure signal not emited.");
 }
@@ -55,7 +53,7 @@ void Defaultactionlistenertest::emitSuccess()
 {
     DefaultActionListener listener("Test");
     QSignalSpy spy(&listener, SIGNAL(success()));
-    const TokenDummy token;
+    const DummyToken token;
     listener.on_success(token);
     QVERIFY2(spy.count() == 1, "Success signal not emited.");
 }
