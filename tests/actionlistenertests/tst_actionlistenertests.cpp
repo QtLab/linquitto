@@ -5,6 +5,7 @@
 #include <mqtt/token.h>
 
 #include "../../unsubscribeactionlistener.h"
+#include "../../defaultactionlistener.h"
 
 class DummyToken : public mqtt::itoken
 {
@@ -43,15 +44,17 @@ public:
     Actionlistenertests();
 
 private:
-    void emitTests(QSignalSpy &spy, QString expectedTopic);
+    void emitTests(QSignalSpy &spy, QString expectedTopic, const char *testname);
 
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
-    void emitSuccessWithToken();
-    void emitSuccessWithoutToken();
-    void emitFailureWithToken();
-    void emitFailureWithoutToken();
+    void emitUnsubscribeSuccessWithToken();
+    void emitUnsubscribeSuccessWithoutToken();
+    void emitUnsubscribeFailureWithToken();
+    void emitUnsubscribeFailureWithoutToken();
+    void emitDefaultActionSuccess();
+    void emitDefaultActionFailure();
 };
 
 Actionlistenertests::Actionlistenertests()
@@ -67,48 +70,67 @@ void Actionlistenertests::cleanupTestCase()
 {
 }
 
-void Actionlistenertests::emitSuccessWithToken()
+void Actionlistenertests::emitUnsubscribeSuccessWithToken()
 {
     UnsubscribeActionListener listener;
     QSignalSpy spy(&listener, &UnsubscribeActionListener::success);
     const DummyToken token("hello");
     listener.on_success(token);
-    emitTests(spy, "hello");
+    emitTests(spy, "hello", "emitUnsubscribeSuccessWithToken");
 }
 
-void Actionlistenertests::emitSuccessWithoutToken()
+void Actionlistenertests::emitUnsubscribeSuccessWithoutToken()
 {
     UnsubscribeActionListener listener;
     QSignalSpy spy(&listener, &UnsubscribeActionListener::success);
     const DummyToken token;
     listener.on_success(token);
-    emitTests(spy, "unknown");
+    emitTests(spy, "unknown", "emitUnsubscribeSuccessWithoutToken");
 }
 
-void Actionlistenertests::emitFailureWithToken()
+void Actionlistenertests::emitUnsubscribeFailureWithToken()
 {
     UnsubscribeActionListener listener;
     QSignalSpy spy(&listener, &UnsubscribeActionListener::failure);
     const DummyToken token("hello");
     listener.on_failure(token);
-    emitTests(spy, "hello");
+    emitTests(spy, "hello", "emitUnsubscribeFailureWithToken");
 }
 
-void Actionlistenertests::emitFailureWithoutToken()
+void Actionlistenertests::emitUnsubscribeFailureWithoutToken()
 {
     UnsubscribeActionListener listener;
     QSignalSpy spy(&listener, &UnsubscribeActionListener::failure);
     const DummyToken token;
     listener.on_failure(token);
-    emitTests(spy, "unknown");
+    emitTests(spy, "unknown", "emitUnsubscribeFailureWithoutToken");
 }
 
-void Actionlistenertests::emitTests(QSignalSpy &spy, QString expectedTopic)
+void Actionlistenertests::emitDefaultActionSuccess()
 {
-    QCOMPARE(spy.count(), 1);
+    DefaultActionListener listener("Test");
+    QSignalSpy spy(&listener, SIGNAL(success()));
+    const DummyToken token;
+    listener.on_success(token);
+    QVERIFY2(spy.count() == 1, "Success signal not emited.");
+}
+
+void Actionlistenertests::emitDefaultActionFailure()
+{
+    DefaultActionListener listener("Test");
+    QSignalSpy spy(&listener, SIGNAL(failure()));
+    const DummyToken token;
+    listener.on_failure(token);
+    QVERIFY2(spy.count() == 1, "Failure signal not emited.");
+}
+
+void Actionlistenertests::emitTests(QSignalSpy &spy, QString expectedTopic,
+                                    const char *testname)
+{
+    QVERIFY2(spy.count() == 1, testname);
     auto arguments = spy.takeFirst();
-    QCOMPARE(arguments.at(0).type(), QVariant::String);
-    QCOMPARE(arguments.at(0).toString(), expectedTopic);
+    QVERIFY2(arguments.at(0).type() == QVariant::String, testname);
+    QVERIFY2(arguments.at(0).toString() == expectedTopic, testname);
 }
 
 QTEST_APPLESS_MAIN(Actionlistenertests)

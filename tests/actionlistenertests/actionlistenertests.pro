@@ -17,7 +17,8 @@ TEMPLATE = app
 
 
 SOURCES += tst_actionlistenertests.cpp \
-    ../../unsubscribeactionlistener.cpp
+    ../../unsubscribeactionlistener.cpp \
+    ../../defaultactionlistener.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix:!macx: LIBS += -L$$PWD/../../../paho.mqtt.c/build/output/ -lpaho-mqtt3a
@@ -31,4 +32,5 @@ INCLUDEPATH += $$PWD/../../../paho.mqtt.cpp/src
 DEPENDPATH += $$PWD/../../../paho.mqtt.cpp/src
 
 HEADERS += \
-    ../../unsubscribeactionlistener.h
+    ../../unsubscribeactionlistener.h \
+    ../../defaultactionlistener.h
