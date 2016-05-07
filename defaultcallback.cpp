@@ -26,5 +26,6 @@ void DefaultCallback::delivery_complete(mqtt::idelivery_token_ptr tok)
 {
     qDebug() << "DefaultCallback::delivery_complete"
              << tok->get_message()->get_payload().c_str();
+    emit deliveryComplete();
 }
 
