@@ -13,7 +13,8 @@ class AsyncConnection : public QObject
 {
     Q_OBJECT
 public:
-     explicit AsyncConnection(QObject *parent = 0);
+     explicit AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
+                              QObject *parent = 0);
     ~AsyncConnection() {}
 
     void connectWithServer();
@@ -21,7 +22,7 @@ public:
     void publishMessage(QString const &topic, QString const &message);
     void subscribeToTopic(QString const &topic);
     void unsubscribeFromTopic(QString const &topic);
-    bool isConnectedWithServer() const {return m_client.is_connected();}
+    bool isConnectedWithServer() const {return m_client->is_connected();}
 
 signals:
     void connected();
@@ -35,7 +36,14 @@ signals:
 public slots:
 
 private:
-    mqtt::async_client m_client;
+    /*
+     * using polymorphy and dependency injection to make AsyncConnection
+     * testable and configureable
+     * m_client is now only dependend on an abstraction
+     * (i.e.: mqtt::iasync_client)
+     * the incection happens through the ctor
+     */
+    std::unique_ptr<mqtt::iasync_client> m_client;
 
     // Actionlistener
     DefaultActionListener m_connectListener;

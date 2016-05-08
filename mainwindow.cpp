@@ -11,6 +11,9 @@ namespace linquitto {
 const QString emptyFill("...");
 }
 
+const std::string ADDRESS("tcp://localhost:1883");
+const std::string CLIENTID("AsyncPublisher");
+
 /*!
  * \brief MainWindow::MainWindow creates the instance, builds the ui and connects signals/slots
  * \param parent
@@ -18,7 +21,8 @@ const QString emptyFill("...");
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_connection()
+    m_connection(std::move(std::unique_ptr<mqtt::iasync_client>(
+                               new mqtt::async_client(ADDRESS, CLIENTID))))
 {
     ui->setupUi(this);
 

@@ -2,12 +2,9 @@
 
 #include <QDebug>
 
-const std::string ADDRESS("tcp://localhost:1883");
-const std::string CLIENTID("AsyncPublisher");
-
-AsyncConnection::AsyncConnection(QObject *parent) :
+AsyncConnection::AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
+                                 QObject *parent) :
     QObject(parent),
-    m_client(ADDRESS, CLIENTID),
     m_connectListener(QString("connecting")),
     m_disconnectListener(QString("disconnecting")),
     m_publishListener(QString("publishing")),
@@ -25,7 +22,8 @@ AsyncConnection::AsyncConnection(QObject *parent) :
             this, SIGNAL(connectionLost(QString)));
     connect(&m_callback, SIGNAL(messageArrived(QString,QString)),
             this, SIGNAL(messageArrived(QString,QString)));
-    m_client.set_callback(m_callback);
+    m_client = std::move(client); // since unique_ptr can't be copied (that's the meaning of unique) move the pointer
+    m_client->set_callback(m_callback);
 }
 
 void AsyncConnection::connectWithServer()
@@ -33,17 +31,17 @@ void AsyncConnection::connectWithServer()
     mqtt::connect_options connOpts;
     connOpts.set_keep_alive_interval(20);
     connOpts.set_clean_session(true);
-    if(m_client.is_connected()) {
+    if(m_client->is_connected()) {
         qDebug() << "AsyncConnection::connectWithServer: already connected!";
     } else {
-        m_client.connect(connOpts, nullptr, m_connectListener);
+        m_client->connect(connOpts, nullptr, m_connectListener);
     }
 }
 
 void AsyncConnection::disconnectFromServer()
 {
-    if(m_client.is_connected()) {
-        m_client.disconnect(nullptr, m_disconnectListener);
+    if(m_client->is_connected()) {
+        m_client->disconnect(nullptr, m_disconnectListener);
     } else {
         qDebug() << "AsyncConnection::disconnectFromServer: not connected!";
     }
@@ -51,11 +49,11 @@ void AsyncConnection::disconnectFromServer()
 
 void AsyncConnection::publishMessage(const QString &topic, const QString &message)
 {
-    if(m_client.is_connected()) {
+    if(m_client->is_connected()) {
         qDebug() << "AsyncConnection::sendMessage: " << topic << message;
         mqtt::message_ptr pubmsg =
                 std::make_shared<mqtt::message>(message.toStdString().c_str());
-        m_client.publish(topic.toStdString(), pubmsg, nullptr, m_publishListener);
+        m_client->publish(topic.toStdString(), pubmsg, nullptr, m_publishListener);
     } else {
         qDebug() << "AsyncConnection::sendMessage: failed, not connected!";
     }
@@ -63,9 +61,9 @@ void AsyncConnection::publishMessage(const QString &topic, const QString &messag
 
 void AsyncConnection::subscribeToTopic(const QString &topic)
 {
-    if(m_client.is_connected()) {
+    if(m_client->is_connected()) {
         qDebug() << "AsyncConnection::subscribeToTopic: " << topic;
-        m_client.subscribe(topic.toStdString(), 1, nullptr, m_subscribeListener);
+        m_client->subscribe(topic.toStdString(), 1, nullptr, m_subscribeListener);
     } else {
         qDebug() << "AsyncConnection::subscribeToTopic: failed, not connected!";
     }
@@ -73,9 +71,9 @@ void AsyncConnection::subscribeToTopic(const QString &topic)
 
 void AsyncConnection::unsubscribeFromTopic(const QString &topic)
 {
-    if(m_client.is_connected()) {
+    if(m_client->is_connected()) {
         qDebug() << "AsyncConnection::unsubscribeFromTopic: " << topic;
-        m_client.unsubscribe(topic.toStdString(), nullptr, m_unsubscribeListener);
+        m_client->unsubscribe(topic.toStdString(), nullptr, m_unsubscribeListener);
     } else {
         qDebug() << "AsyncConnection::unsubscribeFromTopic: failed, not connected!";
     }
