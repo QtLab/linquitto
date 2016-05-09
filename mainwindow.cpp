@@ -5,6 +5,8 @@
 
 #include "mqtt/async_client.h"
 
+#include "makeunique.h"
+
 #include <QDebug>
 
 namespace linquitto {
@@ -21,8 +23,7 @@ const std::string CLIENTID("AsyncPublisher");
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_connection(std::move(std::unique_ptr<mqtt::iasync_client>(
-                               new mqtt::async_client(ADDRESS, CLIENTID))))
+    m_connection(linquitto::make_unique<mqtt::async_client>(ADDRESS, CLIENTID))
 {
     ui->setupUi(this);
 

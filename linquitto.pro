@@ -28,7 +28,8 @@ HEADERS  += mainwindow.h \
     defaultactionlistener.h \
     debugcallback.h \
     defaultcallback.h \
-    unsubscribeactionlistener.h
+    unsubscribeactionlistener.h \
+    makeunique.h
 
 FORMS    += mainwindow.ui
 
