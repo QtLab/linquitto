@@ -31,26 +31,33 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // connect the buttons
-    // TODO: change the SIGNAL/SLOT macro calls to function pointer,
-    //       since the compiler can now better check if the method signatures are compatible
-    connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::switchConnection);
-    //connect(ui->connectButton, SIGNAL(clicked()), this, SLOT(switchConnection()));
-    connect(ui->publishButton, SIGNAL(clicked()), this, SLOT(onPublish()));
-    connect(ui->subscribeButton, SIGNAL(clicked()), this, SLOT(onSubscribe()));
-    connect(ui->unsubscribeButton, SIGNAL(clicked()), this, SLOT(onUnsubscribe()));
+     connect(ui->connectButton, &QPushButton::clicked,
+             this, &MainWindow::switchConnection);
+    connect(ui->publishButton, &QPushButton::clicked,
+            this, &MainWindow::onPublish);
+    connect(ui->subscribeButton, &QPushButton::clicked,
+            this, &MainWindow::onSubscribe);
+    connect(ui->unsubscribeButton, &QPushButton::clicked,
+            this, &MainWindow::onUnsubscribe);
 
     // connect with signals from connection object
+    // get a non owning pointer from the connection map for the connect operation:
     AsyncConnection *pConnection = m_connections[CLIENTID].get();
-    connect(pConnection, SIGNAL(connected()), this, SLOT(connectionEstablished()));
-    connect(pConnection, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(pConnection, SIGNAL(published()), this, SLOT(connectionHasPublished()));
-    connect(pConnection, SIGNAL(subscribed()), this, SLOT(connectionHasSubscribed()));
-    connect(pConnection, SIGNAL(unsubscribed(QString)),
-            this, SLOT(connectionHasUnsubscribed(QString)));
-    connect(pConnection, SIGNAL(messageArrived(QString,QString)),
-            this, SLOT(messageArrived(QString,QString)));
-    connect(pConnection, SIGNAL(connectionLost(QString)),
-            this, SLOT(connectionLost(QString)));
+    // and now connect:
+    connect(pConnection, &AsyncConnection::connected,
+            this, &MainWindow::connectionEstablished);
+    connect(pConnection, &AsyncConnection::disconnected,
+            this, &MainWindow::disconnected);
+    connect(pConnection, &AsyncConnection::published,
+            this, &MainWindow::connectionHasPublished);
+    connect(pConnection, &AsyncConnection::subscribed,
+            this, &MainWindow::connectionHasSubscribed);
+    connect(pConnection, &AsyncConnection::unsubscribed,
+            this, &MainWindow::connectionHasUnsubscribed);
+    connect(pConnection, &AsyncConnection::messageArrived,
+            this, &MainWindow::messageArrived);
+    connect(pConnection, &AsyncConnection::connectionLost,
+            this, &MainWindow::connectionLost);
 }
 
 MainWindow::~MainWindow()
