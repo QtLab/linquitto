@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <memory>
+#include <map>
 
 //#include "connection.h"
 #include "asyncconnection.h"
@@ -41,8 +42,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    AsyncConnection m_connection;
-    //DefaultActionListener m_defaultListener;
+    std::map<std::string, std::unique_ptr<AsyncConnection> > m_connections;
     DebugCallback m_debugCallback;
 };
 

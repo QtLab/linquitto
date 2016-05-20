@@ -22,10 +22,13 @@ const std::string CLIENTID("AsyncPublisher");
  */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_connection(linquitto::make_unique<mqtt::async_client>(ADDRESS, CLIENTID))
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_connections[CLIENTID] =
+            linquitto::make_unique<AsyncConnection>(
+                linquitto::make_unique<mqtt::async_client>(ADDRESS, CLIENTID));
+
 
     // connect the buttons
     // TODO: change the SIGNAL/SLOT macro calls to function pointer,
@@ -37,15 +40,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->unsubscribeButton, SIGNAL(clicked()), this, SLOT(onUnsubscribe()));
 
     // connect with signals from connection object
-    connect(&m_connection, SIGNAL(connected()), this, SLOT(connectionEstablished()));
-    connect(&m_connection, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(&m_connection, SIGNAL(published()), this, SLOT(connectionHasPublished()));
-    connect(&m_connection, SIGNAL(subscribed()), this, SLOT(connectionHasSubscribed()));
-    connect(&m_connection, SIGNAL(unsubscribed(QString)),
+    AsyncConnection *pConnection = m_connections[CLIENTID].get();
+    connect(pConnection, SIGNAL(connected()), this, SLOT(connectionEstablished()));
+    connect(pConnection, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(pConnection, SIGNAL(published()), this, SLOT(connectionHasPublished()));
+    connect(pConnection, SIGNAL(subscribed()), this, SLOT(connectionHasSubscribed()));
+    connect(pConnection, SIGNAL(unsubscribed(QString)),
             this, SLOT(connectionHasUnsubscribed(QString)));
-    connect(&m_connection, SIGNAL(messageArrived(QString,QString)),
+    connect(pConnection, SIGNAL(messageArrived(QString,QString)),
             this, SLOT(messageArrived(QString,QString)));
-    connect(&m_connection, SIGNAL(connectionLost(QString)),
+    connect(pConnection, SIGNAL(connectionLost(QString)),
             this, SLOT(connectionLost(QString)));
 }
 
@@ -56,10 +60,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::switchConnection()
 {
-    if(m_connection.isConnectedWithServer()) {
-        m_connection.disconnectFromServer();
+    if(m_connections[CLIENTID]->isConnectedWithServer()) {
+        m_connections[CLIENTID]->disconnectFromServer();
     } else {
-        m_connection.connectWithServer();
+        m_connections[CLIENTID]->connectWithServer();
     }
 }
 
@@ -141,7 +145,7 @@ void MainWindow::onSubscribe()
     }
 
     // subscribe only when topic is filled:
-    m_connection.subscribeToTopic(topic);
+    m_connections[CLIENTID]->subscribeToTopic(topic);
 }
 
 void MainWindow::onUnsubscribe()
@@ -162,7 +166,7 @@ void MainWindow::onUnsubscribe()
         return;
     }
 
-    m_connection.unsubscribeFromTopic(topic);
+    m_connections[CLIENTID]->unsubscribeFromTopic(topic);
 }
 
 void MainWindow::onPublish()
@@ -186,5 +190,5 @@ void MainWindow::onPublish()
     }
 
     // publish only when topic and message are filled
-    m_connection.publishMessage(topic, message);
+    m_connections[CLIENTID]->publishMessage(topic, message);
 }

@@ -5,6 +5,7 @@
 AsyncConnection::AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
                                  QObject *parent) :
     QObject(parent),
+    m_client(std::move(client)),
     m_connectListener(QString("connecting")),
     m_disconnectListener(QString("disconnecting")),
     m_publishListener(QString("publishing")),
@@ -22,8 +23,12 @@ AsyncConnection::AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
             this, SIGNAL(connectionLost(QString)));
     connect(&m_callback, SIGNAL(messageArrived(QString,QString)),
             this, SIGNAL(messageArrived(QString,QString)));
-    m_client = std::move(client); // since unique_ptr can't be copied (that's the meaning of unique) move the pointer
     m_client->set_callback(m_callback);
+}
+
+AsyncConnection::~AsyncConnection()
+{
+    qDebug() << QString(m_client->get_client_id().c_str()) + ": AsyncConnection dtor called.";
 }
 
 void AsyncConnection::connectWithServer()

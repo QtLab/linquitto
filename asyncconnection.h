@@ -15,7 +15,7 @@ class AsyncConnection : public QObject
 public:
      explicit AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
                               QObject *parent = 0);
-    ~AsyncConnection() {}
+    ~AsyncConnection();
 
     void connectWithServer();
     void disconnectFromServer();
@@ -23,6 +23,7 @@ public:
     void subscribeToTopic(QString const &topic);
     void unsubscribeFromTopic(QString const &topic);
     bool isConnectedWithServer() const {return m_client->is_connected();}
+    std::string getClientId() const {return m_client->get_client_id();}
 
 signals:
     void connected();
