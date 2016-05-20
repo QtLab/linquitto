@@ -204,6 +204,9 @@
     </widget>
    </widget>
    <widget class="QPushButton" name="connectButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>250</x>

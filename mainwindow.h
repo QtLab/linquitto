@@ -42,9 +42,14 @@ public slots:
     void onCreateConnection();
 
 private:
+    void createConnection(QString name, QString broker, int port);
+    void connectSignals(QString name);
+
+private:
     Ui::MainWindow *ui;
-    std::map<std::string, std::unique_ptr<AsyncConnection> > m_connections;
+    std::map<QString, std::unique_ptr<AsyncConnection> > m_connections;
     DebugCallback m_debugCallback;
+    QString actualConnectionName;
 };
 
 #endif // MAINWINDOW_H

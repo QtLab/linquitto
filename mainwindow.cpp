@@ -26,39 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_connections[CLIENTID] =
-            linquitto::make_unique<AsyncConnection>(
-                linquitto::make_unique<mqtt::async_client>(ADDRESS, CLIENTID));
+//    m_connections[CLIENTID] =
+//            linquitto::make_unique<AsyncConnection>(
+//                linquitto::make_unique<mqtt::async_client>(ADDRESS, CLIENTID));
 
-
-    // connect the buttons
-     connect(ui->connectButton, &QPushButton::clicked,
-             this, &MainWindow::switchConnection);
-    connect(ui->publishButton, &QPushButton::clicked,
-            this, &MainWindow::onPublish);
-    connect(ui->subscribeButton, &QPushButton::clicked,
-            this, &MainWindow::onSubscribe);
-    connect(ui->unsubscribeButton, &QPushButton::clicked,
-            this, &MainWindow::onUnsubscribe);
-
-    // connect with signals from connection object
-    // get a non owning pointer from the connection map for the connect operation:
-    AsyncConnection *pConnection = m_connections[CLIENTID].get();
-    // and now connect:
-    connect(pConnection, &AsyncConnection::connected,
-            this, &MainWindow::connectionEstablished);
-    connect(pConnection, &AsyncConnection::disconnected,
-            this, &MainWindow::disconnected);
-    connect(pConnection, &AsyncConnection::published,
-            this, &MainWindow::connectionHasPublished);
-    connect(pConnection, &AsyncConnection::subscribed,
-            this, &MainWindow::connectionHasSubscribed);
-    connect(pConnection, &AsyncConnection::unsubscribed,
-            this, &MainWindow::connectionHasUnsubscribed);
-    connect(pConnection, &AsyncConnection::messageArrived,
-            this, &MainWindow::messageArrived);
-    connect(pConnection, &AsyncConnection::connectionLost,
-            this, &MainWindow::connectionLost);
 
     // connect the menu entries:
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
@@ -73,10 +44,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::switchConnection()
 {
-    if(m_connections[CLIENTID]->isConnectedWithServer()) {
-        m_connections[CLIENTID]->disconnectFromServer();
+    if(m_connections[actualConnectionName]->isConnectedWithServer()) {
+        m_connections[actualConnectionName]->disconnectFromServer();
     } else {
-        m_connections[CLIENTID]->connectWithServer();
+        m_connections[actualConnectionName]->connectWithServer();
     }
 }
 
@@ -158,7 +129,7 @@ void MainWindow::onSubscribe()
     }
 
     // subscribe only when topic is filled:
-    m_connections[CLIENTID]->subscribeToTopic(topic);
+    m_connections[actualConnectionName]->subscribeToTopic(topic);
 }
 
 void MainWindow::onUnsubscribe()
@@ -179,7 +150,7 @@ void MainWindow::onUnsubscribe()
         return;
     }
 
-    m_connections[CLIENTID]->unsubscribeFromTopic(topic);
+    m_connections[actualConnectionName]->unsubscribeFromTopic(topic);
 }
 
 void MainWindow::onPublish()
@@ -203,7 +174,7 @@ void MainWindow::onPublish()
     }
 
     // publish only when topic and message are filled
-    m_connections[CLIENTID]->publishMessage(topic, message);
+    m_connections[actualConnectionName]->publishMessage(topic, message);
 }
 
 void MainWindow::onCreateConnection()
@@ -215,5 +186,66 @@ void MainWindow::onCreateConnection()
     qDebug() << "name=" << dialog.getName();
     qDebug() << "broker=" << dialog.getBroker();
     qDebug() << "port=" << dialog.getPort();
+    createConnection(dialog.getName(), dialog.getBroker(), dialog.getPort());
+}
 
+void MainWindow::createConnection(QString name, QString broker, int port)
+{
+    if(name.isEmpty() || broker.isEmpty()) {
+        return;
+    }
+    QString brokerString = "tcp://" + broker + ":" + QString::number(port);
+    QUrl url(brokerString);
+    if(url.isValid()) {
+        qDebug() << "Valid url.";
+    } else {
+        qDebug() << "Invalid url!";
+        return;
+    }
+
+    if( m_connections.find(name) == m_connections.end() ){
+        m_connections[name] =
+                linquitto::make_unique<AsyncConnection>(
+                    linquitto::make_unique<mqtt::async_client>(
+                        brokerString.toStdString(), name.toStdString()));
+        qDebug() << "New connection created.";
+        actualConnectionName = name;
+        connectSignals(name);
+    } else {
+        qDebug() << "No connection created. Name" << name << "already exists!";
+    }
+
+}
+
+void MainWindow::connectSignals(QString name)
+{
+    // connect the buttons
+    connect(ui->connectButton, &QPushButton::clicked,
+            this, &MainWindow::switchConnection);
+    connect(ui->publishButton, &QPushButton::clicked,
+            this, &MainWindow::onPublish);
+    connect(ui->subscribeButton, &QPushButton::clicked,
+            this, &MainWindow::onSubscribe);
+    connect(ui->unsubscribeButton, &QPushButton::clicked,
+            this, &MainWindow::onUnsubscribe);
+
+    // connect with signals from connection object
+    // get a non owning pointer from the connection map for the connect operation:
+    AsyncConnection *pConnection = m_connections[name].get();
+    // and now connect:
+    connect(pConnection, &AsyncConnection::connected,
+            this, &MainWindow::connectionEstablished);
+    connect(pConnection, &AsyncConnection::disconnected,
+            this, &MainWindow::disconnected);
+    connect(pConnection, &AsyncConnection::published,
+            this, &MainWindow::connectionHasPublished);
+    connect(pConnection, &AsyncConnection::subscribed,
+            this, &MainWindow::connectionHasSubscribed);
+    connect(pConnection, &AsyncConnection::unsubscribed,
+            this, &MainWindow::connectionHasUnsubscribed);
+    connect(pConnection, &AsyncConnection::messageArrived,
+            this, &MainWindow::messageArrived);
+    connect(pConnection, &AsyncConnection::connectionLost,
+            this, &MainWindow::connectionLost);
+    ui->connectButton->setEnabled(true);
 }
