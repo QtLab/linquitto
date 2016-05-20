@@ -58,6 +58,9 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::messageArrived);
     connect(pConnection, &AsyncConnection::connectionLost,
             this, &MainWindow::connectionLost);
+
+    // connect the menu entries:
+    connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
 }
 
 MainWindow::~MainWindow()
