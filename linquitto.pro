@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     defaultactionlistener.cpp \
     debugcallback.cpp \
     defaultcallback.cpp \
-    unsubscribeactionlistener.cpp
+    unsubscribeactionlistener.cpp \
+    createconnectiondialog.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -29,9 +30,11 @@ HEADERS  += mainwindow.h \
     debugcallback.h \
     defaultcallback.h \
     unsubscribeactionlistener.h \
-    makeunique.h
+    makeunique.h \
+    createconnectiondialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    create_connection_dialog.ui
 
 
 unix:!macx: LIBS += -L$$PWD/../paho.mqtt.cpp/lib/ -lmqttpp

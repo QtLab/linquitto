@@ -6,6 +6,7 @@
 #include "mqtt/async_client.h"
 
 #include "makeunique.h"
+#include "createconnectiondialog.h"
 
 #include <QDebug>
 
@@ -61,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // connect the menu entries:
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionNew_Connection, &QAction::triggered,
+            this, &MainWindow::onCreateConnection);
 }
 
 MainWindow::~MainWindow()
@@ -201,4 +204,16 @@ void MainWindow::onPublish()
 
     // publish only when topic and message are filled
     m_connections[CLIENTID]->publishMessage(topic, message);
+}
+
+void MainWindow::onCreateConnection()
+{
+    qDebug() << "Create a new connection.";
+    CreateConnectionDialog dialog(this);
+    int result = dialog.exec();
+    qDebug() << "result=" << result;
+    qDebug() << "name=" << dialog.getName();
+    qDebug() << "broker=" << dialog.getBroker();
+    qDebug() << "port=" << dialog.getPort();
+
 }

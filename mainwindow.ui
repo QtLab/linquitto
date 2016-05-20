@@ -264,6 +264,9 @@
       <height>191</height>
      </rect>
     </property>
+    <property name="tabsClosable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
       <string>Tab 1</string>
@@ -289,6 +292,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_Connection"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuMosquitto_Client_for_Linux"/>
@@ -305,6 +310,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionNew_Connection">
+   <property name="text">
+    <string>New Connection</string>
    </property>
   </action>
  </widget>

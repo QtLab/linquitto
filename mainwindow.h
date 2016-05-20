@@ -39,6 +39,7 @@ public slots:
     void onSubscribe();
     void onUnsubscribe();
     void onPublish();
+    void onCreateConnection();
 
 private:
     Ui::MainWindow *ui;
