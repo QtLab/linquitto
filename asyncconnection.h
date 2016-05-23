@@ -38,11 +38,11 @@ public slots:
 
 private:
     /*
-     * using polymorphy and dependency injection to make AsyncConnection
-     * testable and configureable
+     * using polymorphism and dependency injection to make AsyncConnection
+     * testable and configurable
      * m_client is now only dependend on an abstraction
      * (i.e.: mqtt::iasync_client)
-     * the incection happens through the ctor
+     * the injection happens through the ctor
      */
     std::unique_ptr<mqtt::iasync_client> m_client;
 

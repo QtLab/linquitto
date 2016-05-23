@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>888</width>
+    <width>610</width>
     <height>518</height>
    </rect>
   </property>
@@ -17,255 +17,24 @@
    <widget class="QListWidget" name="logList">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>100</y>
-      <width>281</width>
-      <height>341</height>
+      <x>10</x>
+      <y>380</y>
+      <width>561</width>
+      <height>71</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="publishGroup">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>201</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Publish</string>
-    </property>
-    <property name="flat">
-     <bool>false</bool>
-    </property>
-    <widget class="QLabel" name="topicLabel">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>30</y>
-       <width>67</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Topic:</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="topicEdit">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>50</y>
-       <width>180</width>
-       <height>28</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="messageLabel">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>90</y>
-       <width>67</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Message:</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="messageEdit">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>110</y>
-       <width>180</width>
-       <height>28</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="publishButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>160</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>publish</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="subscribeBox">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>50</y>
-      <width>310</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Subscribe</string>
-    </property>
-    <widget class="QLabel" name="subscribeTopicLabel">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>30</y>
-       <width>67</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Topic:</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="subscribeTopicEdit">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>50</y>
-       <width>180</width>
-       <height>28</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="subscribeButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>50</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>subscribe</string>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="messageList">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>150</y>
-       <width>295</width>
-       <height>241</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="topicCombo">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>90</y>
-       <width>180</width>
-       <height>27</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>130</y>
-       <width>70</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Messages:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="unsubscribeButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>90</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>unsubscribe</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QPushButton" name="connectButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>5</y>
-      <width>85</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Connect</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>80</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Log:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Server:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="serverLabel">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>10</y>
-      <width>151</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>tcp://localhost:1883</string>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
-      <width>211</width>
-      <height>191</height>
+      <y>10</y>
+      <width>561</width>
+      <height>361</height>
      </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
     <property name="tabsClosable">
      <bool>true</bool>
@@ -287,7 +56,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>888</width>
+     <width>610</width>
      <height>25</height>
     </rect>
    </property>

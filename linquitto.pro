@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     debugcallback.cpp \
     defaultcallback.cpp \
     unsubscribeactionlistener.cpp \
-    createconnectiondialog.cpp
+    createconnectiondialog.cpp \
+    connectioncontent.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -31,10 +32,12 @@ HEADERS  += mainwindow.h \
     defaultcallback.h \
     unsubscribeactionlistener.h \
     makeunique.h \
-    createconnectiondialog.h
+    createconnectiondialog.h \
+    connectioncontent.h
 
 FORMS    += mainwindow.ui \
-    create_connection_dialog.ui
+    create_connection_dialog.ui \
+    connectioncontent.ui
 
 
 unix:!macx: LIBS += -L$$PWD/../paho.mqtt.cpp/lib/ -lmqttpp
