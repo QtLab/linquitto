@@ -25,6 +25,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionNew_Connection, &QAction::triggered,
             this, &MainWindow::onCreateConnection);
+
+    // connect the buttons:
+    connect(ui->createConnectionButton, &QPushButton::clicked,
+            this, &MainWindow::onCreateConnection);
+
+    // remove the not needed tabs from the QTabWidget:
+    ui->tabWidget->removeTab(1);
+    ui->tabWidget->removeTab(0);
 }
 
 MainWindow::~MainWindow()
@@ -71,6 +79,7 @@ void MainWindow::createConnection(QString name, QString broker, int port)
         connect(content, &ConnectionContent::log, this, &MainWindow::addLog);
         ui->tabWidget->setCurrentIndex(tabIndex);
     } else {
+        addLog("Connection name \"" + name + "\" is not unique!");
         qDebug() << "MainWindow::createConnection: " << name << " is not unique!";
     }
 
