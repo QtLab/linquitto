@@ -29,10 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // connect the buttons:
     connect(ui->createConnectionButton, &QPushButton::clicked,
             this, &MainWindow::onCreateConnection);
-
-    // remove the not needed tabs from the QTabWidget:
-    ui->tabWidget->removeTab(1);
-    ui->tabWidget->removeTab(0);
 }
 
 MainWindow::~MainWindow()
