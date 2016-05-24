@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     defaultcallback.cpp \
     unsubscribeactionlistener.cpp \
     createconnectiondialog.cpp \
-    connectioncontent.cpp
+    connectioncontent.cpp \
+    asyncclient.cpp \
+    connectoptions.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -33,7 +35,9 @@ HEADERS  += mainwindow.h \
     unsubscribeactionlistener.h \
     makeunique.h \
     createconnectiondialog.h \
-    connectioncontent.h
+    connectioncontent.h \
+    asyncclient.h \
+    connectoptions.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \
@@ -45,7 +49,7 @@ unix:!macx: LIBS += -L$$PWD/../paho.mqtt.cpp/lib/ -lmqttpp
 INCLUDEPATH += $$PWD/../paho.mqtt.cpp/src
 DEPENDPATH += $$PWD/../paho.mqtt.cpp/src
 
-unix:!macx: LIBS += -L$$PWD/../paho.mqtt.c/build/output/ -lpaho-mqtt3a
+unix:!macx: LIBS += -L$$PWD/../paho.mqtt.c/build/output/ -lpaho-mqtt3as
 
-INCLUDEPATH += $$PWD/../paho.mqtt.c/build/output
-DEPENDPATH += $$PWD/../paho.mqtt.c/build/output
+INCLUDEPATH += $$PWD/../paho.mqtt.c/src
+DEPENDPATH += $$PWD/../paho.mqtt.c/src

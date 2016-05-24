@@ -8,6 +8,7 @@
 #include "defaultactionlistener.h"
 #include "unsubscribeactionlistener.h"
 #include "defaultcallback.h"
+#include "iasync_client.h"
 
 class AsyncConnection : public QObject
 {
