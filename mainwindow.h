@@ -26,6 +26,7 @@ public:
 public slots:
     void addLog(QString message);
     void onCreateConnection();
+    void closeTab(int index);
 
 private:
     void createConnection(QString name, QString broker, int port);

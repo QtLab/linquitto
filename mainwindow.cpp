@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionNew_Connection, &QAction::triggered,
             this, &MainWindow::onCreateConnection);
+    connect(ui->tabWidget, &QTabWidget::tabCloseRequested,
+            this, &MainWindow::closeTab);
 
     // connect the buttons:
     connect(ui->createConnectionButton, &QPushButton::clicked,
@@ -55,6 +57,14 @@ void MainWindow::onCreateConnection()
     createConnection(dialog.getName(), dialog.getBroker(), dialog.getPort());
 }
 
+void MainWindow::closeTab(int index)
+{
+    if(ui->tabWidget->currentIndex() ==  index) {
+        ui->tabWidget->currentWidget()->deleteLater();
+        ui->tabWidget->removeTab(index);
+    }
+}
+
 void MainWindow::createConnection(QString name, QString broker, int port)
 {
     if(name.isEmpty() || broker.isEmpty()) {
@@ -71,6 +81,7 @@ void MainWindow::createConnection(QString name, QString broker, int port)
 
     if(isUniqueTabName(name)) {
         ConnectionContent *content = new ConnectionContent(brokerString, name);
+        content->setObjectName(name + "_ConnectionContent");
         int tabIndex = ui->tabWidget->addTab(content, name);
         connect(content, &ConnectionContent::log, this, &MainWindow::addLog);
         ui->tabWidget->setCurrentIndex(tabIndex);

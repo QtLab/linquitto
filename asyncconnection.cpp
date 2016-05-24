@@ -28,6 +28,7 @@ AsyncConnection::AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
 
 AsyncConnection::~AsyncConnection()
 {
+    disconnectFromServer();
     qDebug() << QString(m_client->get_client_id().c_str()) + ": AsyncConnection dtor called.";
 }
 
