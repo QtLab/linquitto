@@ -11,6 +11,7 @@ class ProtectableAsyncClient: public AsyncClient
 {
 public:
     ProtectableAsyncClient();
+    ~ProtectableAsyncClient();
 
 
     // AsyncClient interface

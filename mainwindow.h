@@ -6,6 +6,7 @@
 #include <map>
 
 #include "asyncconnection.h"
+#include "protectableasyncclient.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ public:
 public slots:
     void addLog(QString message);
     void onCreateConnection();
+    void onTestConnection();
     void closeTab(int index);
 
 private:
@@ -34,6 +36,7 @@ private:
 
 private:
     Ui::MainWindow *ui;
+    linquitto::ProtectableAsyncClient m_pclient;
 };
 
 #endif // MAINWINDOW_H

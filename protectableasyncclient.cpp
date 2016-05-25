@@ -1,5 +1,7 @@
 #include "protectableasyncclient.h"
 
+#include <QDebug>
+
 using namespace linquitto;
 
 ProtectableAsyncClient::ProtectableAsyncClient(): AsyncClient(), m_handle(nullptr)
@@ -12,6 +14,12 @@ ProtectableAsyncClient::ProtectableAsyncClient(): AsyncClient(), m_handle(nullpt
    if(ret != MQTTASYNC_SUCCESS) {
        throw "ProtectableAsyncClient creation failed!";
    }
+}
+
+ProtectableAsyncClient::~ProtectableAsyncClient()
+{
+    MQTTAsync_destroy(&m_handle);
+    qDebug() << "ProtectableAsyncClient dtor.";
 }
 
 bool ProtectableAsyncClient::isConnected() const

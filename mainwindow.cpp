@@ -9,8 +9,33 @@
 #include "makeunique.h"
 #include "createconnectiondialog.h"
 #include "connectioncontent.h"
+#include "protectableasyncclient.h"
+#include "connectoptions.h"
 
 #include <QDebug>
+
+void onConnectSuccess(void *, MQTTAsync_successData* data)
+{
+    qDebug() << "Successfull connected to" << data->alt.connect.serverURI;
+}
+
+void onConnectFailure(void *, MQTTAsync_failureData* data)
+{
+    qDebug() << "Connection failed! " << data->message;
+}
+
+void onDisconnectSuccess(void *, MQTTAsync_successData* data)
+{
+    if(data == nullptr) {
+        qDebug() << "No data for disconnect.";
+    }
+    qDebug() << "Successfull disconnected";
+}
+
+void onDisconnectFailure(void *, MQTTAsync_failureData* data)
+{
+    qDebug() << "Connection failed! " << data->message;
+}
 
 /*!
  * \brief MainWindow::MainWindow creates the instance, builds the ui and connects signals/slots
@@ -25,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionNew_Connection, &QAction::triggered,
             this, &MainWindow::onCreateConnection);
+    connect(ui->actionTest_Connection, &QAction::triggered,
+            this, &MainWindow::onTestConnection);
     connect(ui->tabWidget, &QTabWidget::tabCloseRequested,
             this, &MainWindow::closeTab);
 
@@ -55,6 +82,24 @@ void MainWindow::onCreateConnection()
     qDebug() << "broker=" << dialog.getBroker();
     qDebug() << "port=" << dialog.getPort();
     createConnection(dialog.getName(), dialog.getBroker(), dialog.getPort());
+}
+
+void MainWindow::onTestConnection()
+{
+    qDebug() << "Connect/Disconnect with a new protectable connection.";
+    if(m_pclient.isConnected()) {
+        qDebug() << "Disconnecting";
+        linquitto::DisconnectOptions disconnOptions;
+        disconnOptions.setOnSuccessCallback(onDisconnectSuccess);
+        disconnOptions.setOnFailureCallback(onDisconnectFailure);
+        m_pclient.disconnect(disconnOptions);
+    } else {
+        qDebug() << "Connecting";
+        linquitto::ConnectOptions connOptions;
+        connOptions.setOnSuccessCallback(onConnectSuccess);
+        connOptions.setOnFailureCallback(onConnectFailure);
+        m_pclient.connect(connOptions);
+    }
 }
 
 void MainWindow::closeTab(int index)
