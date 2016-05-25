@@ -16,7 +16,7 @@ public:
     ConnectOptions();
     ~ConnectOptions();
 
-    MQTTAsync_connectOptions *getOptions();
+    const MQTTAsync_connectOptions *getRawOptions() const;
     void setCleanSession(bool clean);
     void setKeepAlive(int seconds);
     void setMaxInflight(int maxNumberOfMessages);

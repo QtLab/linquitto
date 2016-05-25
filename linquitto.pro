@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     createconnectiondialog.cpp \
     connectioncontent.cpp \
     asyncclient.cpp \
-    connectoptions.cpp
+    connectoptions.cpp \
+    protectableasyncclient.cpp \
+    disconnectoptions.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -37,7 +39,9 @@ HEADERS  += mainwindow.h \
     createconnectiondialog.h \
     connectioncontent.h \
     asyncclient.h \
-    connectoptions.h
+    connectoptions.h \
+    protectableasyncclient.h \
+    disconnectoptions.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \

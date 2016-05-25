@@ -5,10 +5,7 @@ using namespace linquitto;
 
 ConnectOptions::ConnectOptions() :
     m_opts(MQTTAsync_connectOptions_initializer)
-{
-    m_opts.serverURIcount = 0;
-    m_opts.serverURIs = nullptr;
-}
+{}
 
 ConnectOptions::~ConnectOptions()
 {
@@ -17,7 +14,13 @@ ConnectOptions::~ConnectOptions()
     }
 }
 
-MQTTAsync_connectOptions *ConnectOptions::getOptions()
+/*!
+ * \brief ConnectOptions::getRawOptions
+ * \return pointer to a MQTTAsync_connectionOption structure
+ *
+ * Never delete this pointer by yourself, it is a non owning pointer!
+ */
+const MQTTAsync_connectOptions *ConnectOptions::getRawOptions() const
 {
     return &m_opts;
 }
