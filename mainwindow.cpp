@@ -3,6 +3,7 @@
 
 #include <thread>
 #include <QUrl>
+#include <QShortcut>
 
 #include "mqtt/async_client.h"
 
@@ -14,12 +15,21 @@
 
 #include <QDebug>
 
-void onConnectSuccess(void *, MQTTAsync_successData* data)
+QString hallo = "hallo welt.";
+int devil = 666;
+
+void onConnectSuccess(void *context, MQTTAsync_successData* data)
 {
+    if(context != nullptr) {
+        QString *str = static_cast<QString*>(context);
+        qDebug() << *str;
+    } else {
+        qDebug() << "context was empty.";
+    }
     qDebug() << "Successfull connected to" << data->alt.connect.serverURI;
 }
 
-void onConnectFailure(void *, MQTTAsync_failureData* data)
+void onConnectFailure(void *context, MQTTAsync_failureData* data)
 {
     qDebug() << "Connection failed! " << data->message;
 }
@@ -46,6 +56,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // create and connect shortcuts:
+    QShortcut *testShortcut = new QShortcut(QKeySequence(tr("Ctrl+N", "new connection")),
+                                        this);
+    connect(testShortcut, &QShortcut::activated, this, &MainWindow::onTestConnection);
+
     // connect the menu entries:
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionNew_Connection, &QAction::triggered,
@@ -63,6 +79,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::staticOnConnectSuccess(void *, MQTTAsync_successData *data)
+{
+    qDebug() << "--> Successfull connected to" << data->alt.connect.serverURI;
 }
 
 void MainWindow::addLog(QString message)
@@ -98,6 +119,7 @@ void MainWindow::onTestConnection()
         linquitto::ConnectOptions connOptions;
         connOptions.setOnSuccessCallback(onConnectSuccess);
         connOptions.setOnFailureCallback(onConnectFailure);
+        connOptions.setContext(&hallo);
         m_pclient.connect(connOptions);
     }
 }

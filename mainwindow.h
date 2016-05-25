@@ -24,6 +24,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    static void staticOnConnectSuccess(void *, MQTTAsync_successData* data);
+
 public slots:
     void addLog(QString message);
     void onCreateConnection();
