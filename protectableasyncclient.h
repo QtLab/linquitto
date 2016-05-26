@@ -4,6 +4,7 @@
 #include "asyncclient.h"
 #include "connectoptions.h"
 #include "disconnectoptions.h"
+#include "responseoptions.h"
 
 namespace linquitto {
 
@@ -21,9 +22,9 @@ public:
     void setCallback(EventCallback &callback);
     void connect(const ConnectOptions &connOpt);
     void disconnect(const DisconnectOptions &disconnOpt);
-    void publish(const QString &topic, const Message &message, ActionCallback &callback);
-    void subscribe(const QString &topic, int qos, ActionCallback &callback);
-    void unsubscribe(const QString &topic, ActionCallback &callback);
+    void publish(const QString &topic, const Message &message, ResponseOptions &responseOpt);
+    void subscribe(const QString &topic, int qos,  ResponseOptions &responseOpt);
+    void unsubscribe(const QString &topic,  ResponseOptions &responseOpt);
 
 private:
 

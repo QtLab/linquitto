@@ -1,4 +1,5 @@
 #include "protectableasyncclient.h"
+#include "message.h"
 
 #include <QDebug>
 
@@ -51,17 +52,21 @@ void ProtectableAsyncClient::disconnect(const DisconnectOptions &disconnOpt)
     MQTTAsync_disconnect(m_handle, disconnOpt.getRawOptions());
 }
 
-void ProtectableAsyncClient::publish(const QString &topic, const Message &message, ActionCallback &callback)
+void ProtectableAsyncClient::publish(const QString &topic, const Message &message, ResponseOptions &responseOpt)
+{
+    std::string destTopic = topic.toStdString();
+    MQTTAsync_sendMessage(m_handle,
+                          destTopic.c_str(),
+                          message.getRawMessage(),
+                          responseOpt.getRawOptions());
+}
+
+void ProtectableAsyncClient::subscribe(const QString &topic, int qos, ResponseOptions &responseOpt)
 {
     throw "Not yet implemented!";
 }
 
-void ProtectableAsyncClient::subscribe(const QString &topic, int qos, ActionCallback &callback)
-{
-    throw "Not yet implemented!";
-}
-
-void ProtectableAsyncClient::unsubscribe(const QString &topic, ActionCallback &callback)
+void ProtectableAsyncClient::unsubscribe(const QString &topic, ResponseOptions &responseOpt)
 {
     throw "Not yet implemented!";
 }

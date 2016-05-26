@@ -8,8 +8,8 @@ namespace linquitto {
 class ConnectOptions;
 class DisconnectOptions;
 class EventCallback;
-class ActionCallback;
 class Message;
+class ResponseOptions;
 
 class AsyncClient
 {
@@ -26,9 +26,9 @@ public:
     virtual void connect(const ConnectOptions &connOpt) = 0;
     virtual void disconnect(const DisconnectOptions &disconnOpt) = 0;
 
-    virtual void publish(const QString &topic, const Message &message, ActionCallback &callback) = 0;
-    virtual void subscribe(const QString &topic, int qos, ActionCallback &callback) = 0;
-    virtual void unsubscribe(const QString &topic, ActionCallback &callback) = 0;
+    virtual void publish(const QString &topic, const Message &message,  ResponseOptions &responseOpt) = 0;
+    virtual void subscribe(const QString &topic, int qos,  ResponseOptions &responseOpt) = 0;
+    virtual void unsubscribe(const QString &topic,  ResponseOptions &responseOpt) = 0;
 
 };
 

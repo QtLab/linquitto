@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     disconnectoptions.cpp \
     actioncallback.cpp \
     defaultactioncallback.cpp \
-    tools.cpp
+    tools.cpp \
+    message.cpp \
+    responseoptions.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -47,7 +49,9 @@ HEADERS  += mainwindow.h \
     disconnectoptions.h \
     actioncallback.h \
     defaultactioncallback.h \
-    tools.h
+    tools.h \
+    message.h \
+    responseoptions.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \
