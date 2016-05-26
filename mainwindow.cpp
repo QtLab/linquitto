@@ -12,6 +12,8 @@
 #include "connectioncontent.h"
 #include "protectableasyncclient.h"
 #include "connectoptions.h"
+#include "responseoptions.h"
+#include "message.h"
 
 #include <QDebug>
 
@@ -23,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_connectActionCallback("Connect"),
-    m_disconnectActionCallback("Disconnect")
+    m_disconnectActionCallback("Disconnect"),
+    m_publishActionCallback("Publish")
 {
     ui->setupUi(this);
 
@@ -31,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QShortcut *testShortcut = new QShortcut(QKeySequence(tr("Ctrl+N", "new connection")),
                                         this);
     connect(testShortcut, &QShortcut::activated, this, &MainWindow::onTestConnection);
+
+    QShortcut *publishShortcut =
+            new QShortcut(QKeySequence(tr("Ctrl+P", "publish")), this);
+    connect(publishShortcut, &QShortcut::activated, this, &MainWindow::onTestPublish);
 
     // connect the menu entries:
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
@@ -100,6 +107,22 @@ void MainWindow::onTestConnection()
         linquitto::ConnectOptions connOptions;
         connOptions.setActionCallback(&m_connectActionCallback);
         m_pclient.connect(connOptions);
+    }
+}
+
+void MainWindow::onTestPublish()
+{
+    qDebug() << "Publish with protectable connection.";
+    if(m_pclient.isConnected()) {
+        linquitto::ResponseOptions responseOptions;
+        responseOptions.setActionCallback(&m_publishActionCallback);
+        linquitto::Message message;
+        message.setPayload("A test in publishing.");
+        message.setQualityOfService(1);
+        message.setRetained(false);
+        m_pclient.publish("Test", message, responseOptions);
+    } else {
+        qDebug() << "Can't publish. Not connected!";
     }
 }
 

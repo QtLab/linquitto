@@ -32,6 +32,7 @@ public slots:
     void addLog(QString message);
     void onCreateConnection();
     void onTestConnection();
+    void onTestPublish();
     void closeTab(int index);
 
     void onSuccess();
@@ -46,6 +47,7 @@ private:
     linquitto::ProtectableAsyncClient m_pclient;
     linquitto::DefaultActionCallback m_connectActionCallback;
     linquitto::DefaultActionCallback m_disconnectActionCallback;
+    linquitto::DefaultActionCallback m_publishActionCallback;
 };
 
 #endif // MAINWINDOW_H

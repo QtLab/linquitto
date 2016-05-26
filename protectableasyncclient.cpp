@@ -1,5 +1,6 @@
 #include "protectableasyncclient.h"
 #include "message.h"
+#include "tools.h"
 
 #include <QDebug>
 
@@ -39,7 +40,10 @@ QString ProtectableAsyncClient::getClientId() const
 
 void ProtectableAsyncClient::setCallback(EventCallback &callback)
 {
-    throw "Not yet implemented!";
+    MQTTAsync_setCallbacks(m_handle, &callback,
+                           tools::connectionLostCallback,
+                           tools::messageArrivedCallback,
+                           tools::deliveryCompleteCallback);
 }
 
 void ProtectableAsyncClient::connect(const ConnectOptions &connOpt)
@@ -63,11 +67,13 @@ void ProtectableAsyncClient::publish(const QString &topic, const Message &messag
 
 void ProtectableAsyncClient::subscribe(const QString &topic, int qos, ResponseOptions &responseOpt)
 {
-    throw "Not yet implemented!";
+    std::string destTopic = topic.toStdString();
+    MQTTAsync_subscribe(m_handle, destTopic.c_str(), qos, responseOpt.getRawOptions());
 }
 
 void ProtectableAsyncClient::unsubscribe(const QString &topic, ResponseOptions &responseOpt)
 {
-    throw "Not yet implemented!";
+    std::string destTopic = topic.toStdString();
+    MQTTAsync_unsubscribe(m_handle, destTopic.c_str(), responseOpt.getRawOptions());
 }
 

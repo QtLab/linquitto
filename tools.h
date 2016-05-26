@@ -31,6 +31,12 @@ void actionCallback_onSuccess(void *context, MQTTAsync_successData *);
  */
 void actionCallback_onFailure(void *context, MQTTAsync_failureData *data);
 
+void connectionLostCallback(void* context, char* cause);
+int messageArrivedCallback(void *context,
+                            char* topicName, int,
+                            MQTTAsync_message* message);
+void deliveryCompleteCallback(void *context, MQTTAsync_token token);
+
 } // namespace tools
 
 } // namespace linquitto
