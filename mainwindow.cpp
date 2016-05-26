@@ -44,6 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // connect the buttons:
     connect(ui->createConnectionButton, &QPushButton::clicked,
             this, &MainWindow::onCreateConnection);
+
+    connect(&m_connectActionCallback, &linquitto::DefaultActionCallback::success,
+            this, &MainWindow::onSuccess);
+    connect(&m_connectActionCallback, &linquitto::DefaultActionCallback::failure,
+            this, &MainWindow::onFailure);
+
 }
 
 MainWindow::~MainWindow()
@@ -103,6 +109,16 @@ void MainWindow::closeTab(int index)
         ui->tabWidget->currentWidget()->deleteLater();
         ui->tabWidget->removeTab(index);
     }
+}
+
+void MainWindow::onSuccess()
+{
+    addLog("Connected.");
+}
+
+void MainWindow::onFailure(int errorCode, const QString &errorMessage)
+{
+    addLog("Connecting failed: [" + QString::number(errorCode) + "] " + errorMessage);
 }
 
 void MainWindow::createConnection(QString name, QString broker, int port)

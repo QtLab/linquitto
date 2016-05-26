@@ -34,6 +34,9 @@ public slots:
     void onTestConnection();
     void closeTab(int index);
 
+    void onSuccess();
+    void onFailure(int errorCode, const QString &errorMessage);
+
 private:
     void createConnection(QString name, QString broker, int port);
     bool isUniqueTabName(QString name);
