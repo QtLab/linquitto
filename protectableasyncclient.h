@@ -26,6 +26,8 @@ public:
     void unsubscribe(const QString &topic, ActionCallback &callback);
 
 private:
+
+private:
     MQTTAsync m_handle;
 };
 

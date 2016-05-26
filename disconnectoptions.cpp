@@ -1,14 +1,16 @@
 #include "disconnectoptions.h"
+#include "actioncallback.h"
+#include "tools.h"
+
+#include <QDebug>
 
 using namespace linquitto;
 
 DisconnectOptions::DisconnectOptions() :
     m_opts(MQTTAsync_disconnectOptions_initializer)
-{}
-
-void DisconnectOptions::setContext(void *context)
 {
-    m_opts.context = context;
+    m_opts.onSuccess = tools::actionCallback_onSuccess;
+    m_opts.onFailure = tools::actionCallback_onFailure;
 }
 
 void DisconnectOptions::setTimeout(int timeout)
@@ -16,14 +18,9 @@ void DisconnectOptions::setTimeout(int timeout)
     m_opts.timeout = timeout;
 }
 
-void DisconnectOptions::setOnSuccessCallback(MQTTAsync_onSuccess *callback)
+void DisconnectOptions::setActionCallback(ActionCallback *callback)
 {
-    m_opts.onSuccess = callback;
-}
-
-void DisconnectOptions::setOnFailureCallback(MQTTAsync_onFailure *callback)
-{
-    m_opts.onFailure = callback;
+    m_opts.context = callback;
 }
 
 /*!

@@ -7,6 +7,7 @@
 
 #include "asyncconnection.h"
 #include "protectableasyncclient.h"
+#include "defaultactioncallback.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    static void staticOnConnectSuccess(void *, MQTTAsync_successData* data);
+private:
+    static void staticOnConnectSuccess(void *context, MQTTAsync_successData* data);
 
 public slots:
     void addLog(QString message);
@@ -39,6 +41,8 @@ private:
 private:
     Ui::MainWindow *ui;
     linquitto::ProtectableAsyncClient m_pclient;
+    linquitto::DefaultActionCallback m_connectActionCallback;
+    linquitto::DefaultActionCallback m_disconnectActionCallback;
 };
 
 #endif // MAINWINDOW_H

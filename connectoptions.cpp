@@ -1,11 +1,17 @@
 #include "connectoptions.h"
+#include "actioncallback.h"
+#include "tools.h"
+
 #include <QDebug>
 
 using namespace linquitto;
 
 ConnectOptions::ConnectOptions() :
     m_opts(MQTTAsync_connectOptions_initializer)
-{}
+{
+    m_opts.onSuccess = tools::actionCallback_onSuccess;
+    m_opts.onFailure = tools::actionCallback_onFailure;
+}
 
 ConnectOptions::~ConnectOptions()
 {
@@ -63,19 +69,9 @@ void ConnectOptions::setSSLOptions(MQTTAsync_SSLOptions *sslOptions)
     m_opts.ssl = sslOptions;
 }
 
-void ConnectOptions::setOnSuccessCallback(MQTTAsync_onSuccess *onSuccess)
+void ConnectOptions::setActionCallback(ActionCallback *callback)
 {
-    m_opts.onSuccess = onSuccess;
-}
-
-void ConnectOptions::setOnFailureCallback(MQTTAsync_onFailure *onFailure)
-{
-    m_opts.onFailure = onFailure;
-}
-
-void ConnectOptions::setContext(void *context)
-{
-    m_opts.context = context;
+    m_opts.context = callback;
 }
 
 // TODO: should be thoroughly tested, possible buffer overrun or memory leak!
@@ -119,4 +115,3 @@ void ConnectOptions::deleteURIBuffer()
         m_opts.serverURIcount = 0;
     }
 }
-

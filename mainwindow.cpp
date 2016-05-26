@@ -15,45 +15,15 @@
 
 #include <QDebug>
 
-QString hallo = "hallo welt.";
-int devil = 666;
-
-void onConnectSuccess(void *context, MQTTAsync_successData* data)
-{
-    if(context != nullptr) {
-        QString *str = static_cast<QString*>(context);
-        qDebug() << *str;
-    } else {
-        qDebug() << "context was empty.";
-    }
-    qDebug() << "Successfull connected to" << data->alt.connect.serverURI;
-}
-
-void onConnectFailure(void *context, MQTTAsync_failureData* data)
-{
-    qDebug() << "Connection failed! " << data->message;
-}
-
-void onDisconnectSuccess(void *, MQTTAsync_successData* data)
-{
-    if(data == nullptr) {
-        qDebug() << "No data for disconnect.";
-    }
-    qDebug() << "Successfull disconnected";
-}
-
-void onDisconnectFailure(void *, MQTTAsync_failureData* data)
-{
-    qDebug() << "Connection failed! " << data->message;
-}
-
 /*!
  * \brief MainWindow::MainWindow creates the instance, builds the ui and connects signals/slots
  * \param parent
  */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_connectActionCallback("Connect"),
+    m_disconnectActionCallback("Disconnect")
 {
     ui->setupUi(this);
 
@@ -81,8 +51,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::staticOnConnectSuccess(void *, MQTTAsync_successData *data)
+void MainWindow::staticOnConnectSuccess(void *context, MQTTAsync_successData *data)
 {
+    if(context != nullptr) {
+        QString *str = static_cast<QString*>(context);
+        qDebug() << *str;
+    } else {
+        qDebug() << "context was empty.";
+    }
     qDebug() << "--> Successfull connected to" << data->alt.connect.serverURI;
 }
 
@@ -111,15 +87,12 @@ void MainWindow::onTestConnection()
     if(m_pclient.isConnected()) {
         qDebug() << "Disconnecting";
         linquitto::DisconnectOptions disconnOptions;
-        disconnOptions.setOnSuccessCallback(onDisconnectSuccess);
-        disconnOptions.setOnFailureCallback(onDisconnectFailure);
+        disconnOptions.setActionCallback(&m_disconnectActionCallback);
         m_pclient.disconnect(disconnOptions);
     } else {
         qDebug() << "Connecting";
         linquitto::ConnectOptions connOptions;
-        connOptions.setOnSuccessCallback(onConnectSuccess);
-        connOptions.setOnFailureCallback(onConnectFailure);
-        connOptions.setContext(&hallo);
+        connOptions.setActionCallback(&m_connectActionCallback);
         m_pclient.connect(connOptions);
     }
 }

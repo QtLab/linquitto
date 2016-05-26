@@ -10,6 +10,8 @@ extern "C" {
 
 namespace linquitto {
 
+class ActionCallback;
+
 class ConnectOptions
 {
 public:
@@ -24,9 +26,7 @@ public:
     void setUsername(const QString &username);
     void setPassword(const QString &password);
     void setSSLOptions(MQTTAsync_SSLOptions *sslOptions);
-    void setOnSuccessCallback(MQTTAsync_onSuccess *onSuccess);
-    void setOnFailureCallback(MQTTAsync_onFailure *onFailure);
-    void setContext(void *context);
+    void setActionCallback(ActionCallback *callback);
     void setServerURIs(std::list<QString> &serverURIs);
 
 private:
