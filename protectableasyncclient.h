@@ -12,6 +12,7 @@ class ProtectableAsyncClient: public AsyncClient
 {
 public:
     ProtectableAsyncClient();
+    ProtectableAsyncClient(const QString &broker, const QString &name);
     ~ProtectableAsyncClient();
 
 
@@ -30,6 +31,7 @@ private:
 
 private:
     MQTTAsync m_handle;
+    QString m_clientID;
 };
 
 } // end of namespace linquitto

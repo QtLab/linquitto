@@ -14,8 +14,6 @@ class ResponseOptions;
 class AsyncClient
 {
 public:
-    explicit AsyncClient();
-
     virtual ~AsyncClient() {}
 
     virtual bool isConnected() const = 0;

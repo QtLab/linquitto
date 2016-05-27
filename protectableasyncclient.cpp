@@ -6,16 +6,23 @@
 
 using namespace linquitto;
 
-ProtectableAsyncClient::ProtectableAsyncClient(): AsyncClient(), m_handle(nullptr)
+ProtectableAsyncClient::ProtectableAsyncClient():
+    ProtectableAsyncClient("tcp://localhost:1883","ProtectableAsyncTest")
+{}
+
+ProtectableAsyncClient::ProtectableAsyncClient(const QString &broker,
+                                               const QString &name) :
+    m_handle(nullptr),
+    m_clientID(name)
 {
-   int ret = MQTTAsync_create(&m_handle,
-                              "tcp://localhost:1883",
-                              "ProtectableAsyncTest",
-                              MQTTCLIENT_PERSISTENCE_NONE,
-                              nullptr);
-   if(ret != MQTTASYNC_SUCCESS) {
-       throw "ProtectableAsyncClient creation failed!";
-   }
+    int ret = MQTTAsync_create(&m_handle,
+                               broker.toStdString().c_str(),
+                               name.toStdString().c_str(),
+                               MQTTCLIENT_PERSISTENCE_NONE,
+                               nullptr);
+    if(ret != MQTTASYNC_SUCCESS) {
+        throw "ProtectableAsyncClient creation failed!";
+    }
 }
 
 ProtectableAsyncClient::~ProtectableAsyncClient()
@@ -35,7 +42,7 @@ bool ProtectableAsyncClient::isConnected() const
 
 QString ProtectableAsyncClient::getClientId() const
 {
-    throw "Not yet implemented!";
+    return m_clientID;
 }
 
 void ProtectableAsyncClient::setCallback(EventCallback &callback)

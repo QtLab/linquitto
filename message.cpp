@@ -2,6 +2,8 @@
 
 #include <QString>
 
+#include <QDebug>
+
 using namespace linquitto;
 
 Message::Message() :
@@ -13,7 +15,8 @@ void Message::setPayload(const QString &payload)
     m_payload.clear();
     m_payload.append(payload);
     m_msg.payload = m_payload.data();
-    m_msg.payloadlen = m_payload.size() + 1;
+    const int includeZero = 1;
+    m_msg.payloadlen = m_payload.size() + includeZero;
 }
 
 void Message::setQualityOfService(int qos)

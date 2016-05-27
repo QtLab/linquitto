@@ -4,10 +4,12 @@
 
 #include <QDebug>
 
+using namespace linquitto;
+
 ConnectionContent::ConnectionContent(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConnectionContent),
-    m_connection(linquitto::make_unique<mqtt::async_client>(
+    m_connection(make_unique<ProtectableAsyncClient>(
                      "tcp://localhost:1883", "Default"))
 {
     ui->setupUi(this);
@@ -20,8 +22,7 @@ ConnectionContent::ConnectionContent(QString &brokerUrl,
                                      QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConnectionContent),
-    m_connection(linquitto::make_unique<mqtt::async_client>(
-                     brokerUrl.toStdString(), clientName.toStdString()))
+    m_connection(make_unique<ProtectableAsyncClient>(brokerUrl, clientName))
 {
     ui->setupUi(this);
     ui->brokerLabel->setText(brokerUrl);
@@ -72,6 +73,8 @@ void ConnectionContent::onPublish()
 
 void ConnectionContent::onSubscribe()
 {
+    // subscribe only when topic is filled and not allready subscribed to
+
     qDebug() << "subscribe" << "clicked";
     const QString topic = ui->subscribeTopicEdit->text();
 
@@ -81,12 +84,11 @@ void ConnectionContent::onSubscribe()
         return;
     }
 
-    if(ui->subscriptionsCombo->findText(topic, Qt::MatchExactly) == -1) {
+    if(notAlreadySubscribed(topic)) {
+        m_connection.subscribeToTopic(topic);
+    } else {
         qDebug() << "ConnectionContent::onSubscribe: already subscribed to topic!";
     }
-
-    // subscribe only when topic is filled:
-    m_connection.subscribeToTopic(topic);
 }
 
 void ConnectionContent::onUnsubscribe()
@@ -141,16 +143,15 @@ void ConnectionContent::connectionHasPublished()
     emit log(message + " was published on " + topic);
 }
 
-void ConnectionContent::connectionHasSubscribed()
+void ConnectionContent::connectionHasSubscribed(const QString &topic)
 {
-    const QString topic = ui->subscribeTopicEdit->text();
     emit log("Subscribed to topic " + topic);
     qDebug() << "ConnectionContent::connectionHasSubscribed: " << topic;
     ui->subscriptionsCombo->addItem(topic);
     ui->unsubscribeButton->setEnabled(true);
 }
 
-void ConnectionContent::connectionHasUnsubscribed(QString topic)
+void ConnectionContent::connectionHasUnsubscribed(const QString &topic)
 {
     emit log("Unsubscribed from topic " + topic);
     int index = ui->subscriptionsCombo->findText(topic, Qt::MatchExactly);
@@ -174,7 +175,7 @@ void ConnectionContent::connectionLost(QString cause)
 
 void ConnectionContent::messageArrived(QString topic, QString message)
 {
-    ui->subscriptionMessages->addItem("(" + topic + ") " + message);
+    ui->subscriptionMessages->addItem("[" + topic + "]: " + message);
 }
 
 void ConnectionContent::connectSignals()
@@ -206,4 +207,9 @@ void ConnectionContent::connectSignals()
             this, &ConnectionContent::messageArrived);
     connect(&m_connection, &AsyncConnection::connectionLost,
             this, &ConnectionContent::connectionLost);
+}
+
+bool ConnectionContent::notAlreadySubscribed(const QString &topic) const
+{
+    return ui->subscriptionsCombo->findText(topic, Qt::MatchExactly) == -1;
 }

@@ -23,7 +23,6 @@ SOURCES += main.cpp\
     unsubscribeactionlistener.cpp \
     createconnectiondialog.cpp \
     connectioncontent.cpp \
-    asyncclient.cpp \
     connectoptions.cpp \
     protectableasyncclient.cpp \
     disconnectoptions.cpp \
@@ -31,7 +30,8 @@ SOURCES += main.cpp\
     tools.cpp \
     message.cpp \
     responseoptions.cpp \
-    defaulteventcallback.cpp
+    defaulteventcallback.cpp \
+    subscriptionactioncallback.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -53,7 +53,8 @@ HEADERS  += mainwindow.h \
     message.h \
     responseoptions.h \
     eventcallback.h \
-    defaulteventcallback.h
+    defaulteventcallback.h \
+    subscriptionactioncallback.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \

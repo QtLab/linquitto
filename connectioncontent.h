@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "asyncconnection.h"
+#include "protectableasyncclient.h"
 
 namespace Ui {
 class ConnectionContent;
@@ -30,13 +31,14 @@ public slots:
     void connectionEstablished();
     void disconnected();
     void connectionHasPublished();
-    void connectionHasSubscribed();
-    void connectionHasUnsubscribed(QString topic);
+    void connectionHasSubscribed(const QString &topic);
+    void connectionHasUnsubscribed(const QString &topic);
     void connectionLost(QString cause);
     void messageArrived(QString topic, QString message);
 
 private:
     void connectSignals();
+    bool notAlreadySubscribed(const QString &topic) const;
 
 private:
     Ui::ConnectionContent *ui;

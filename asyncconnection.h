@@ -8,12 +8,16 @@
 #include "defaultactionlistener.h"
 #include "unsubscribeactionlistener.h"
 #include "defaultcallback.h"
+#include "protectableasyncclient.h"
+#include "defaulteventcallback.h"
+#include "defaultactioncallback.h"
+#include "subscriptionactioncallback.h"
 
 class AsyncConnection : public QObject
 {
     Q_OBJECT
 public:
-     explicit AsyncConnection(std::unique_ptr<mqtt::iasync_client> client,
+     explicit AsyncConnection(std::unique_ptr<linquitto::ProtectableAsyncClient> client,
                               QObject *parent = 0);
     ~AsyncConnection();
 
@@ -22,15 +26,15 @@ public:
     void publishMessage(QString const &topic, QString const &message);
     void subscribeToTopic(QString const &topic);
     void unsubscribeFromTopic(QString const &topic);
-    bool isConnectedWithServer() const {return m_client->is_connected();}
-    std::string getClientId() const {return m_client->get_client_id();}
+    bool isConnectedWithServer() const {return m_client->isConnected();}
+    QString getClientId() const {return m_client->getClientId();}
 
 signals:
     void connected();
     void disconnected();
     void published();
-    void subscribed();
-    void unsubscribed(QString topic);
+    void subscribed(const QString &topic);
+    void unsubscribed(const QString &topic);
     void messageArrived(QString topic, QString message);
     void connectionLost(QString cause);
 
@@ -41,20 +45,20 @@ private:
      * using polymorphism and dependency injection to make AsyncConnection
      * testable and configurable
      * m_client is now only dependend on an abstraction
-     * (i.e.: mqtt::iasync_client)
+     * (i.e.: linquitto::ProtectableAsyncClient)
      * the injection happens through the ctor
      */
-    std::unique_ptr<mqtt::iasync_client> m_client;
+    std::unique_ptr<linquitto::ProtectableAsyncClient> m_client;
 
     // Actionlistener
-    DefaultActionListener m_connectListener;
-    DefaultActionListener m_disconnectListener;
-    DefaultActionListener m_publishListener;
-    DefaultActionListener m_subscribeListener;
-    UnsubscribeActionListener m_unsubscribeListener;
+    linquitto::DefaultActionCallback m_connectActionCallback;
+    linquitto::DefaultActionCallback m_disconnectActionCallback;
+    linquitto::DefaultActionCallback m_publishActionCallback;
+    linquitto::SubscriptionActionCallback m_subscribeActionCallback;
+    linquitto::SubscriptionActionCallback m_unsubscribeActionCallback;
 
     // Callback
-    DefaultCallback m_callback;
+    linquitto::DefaultEventCallback m_callback;
 };
 
 #endif // ASYNCCONNECTION_H
