@@ -37,6 +37,9 @@ public slots:
 
     void onSuccess();
     void onFailure(int errorCode, const QString &errorMessage);
+    void onMessageArrived(const QString &topic, const QString &message);
+    void onDeliveryComplete(int id);
+    void onConnectionLost(const QString &cause);
 
 private:
     void createConnection(QString name, QString broker, int port);

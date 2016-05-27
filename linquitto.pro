@@ -32,7 +32,7 @@ SOURCES += main.cpp\
     tools.cpp \
     message.cpp \
     responseoptions.cpp \
-    eventcallback.cpp
+    defaulteventcallback.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -53,7 +53,8 @@ HEADERS  += mainwindow.h \
     tools.h \
     message.h \
     responseoptions.h \
-    eventcallback.h
+    eventcallback.h \
+    defaulteventcallback.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \

@@ -8,7 +8,6 @@ namespace linquitto {
 class EventCallback
 {
 public:
-    EventCallback();
     virtual ~EventCallback() {}
 
     virtual void onMessageArrived(QString topic, QString message) = 0;

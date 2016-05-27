@@ -144,6 +144,21 @@ void MainWindow::onFailure(int errorCode, const QString &errorMessage)
     addLog("Connecting failed: [" + QString::number(errorCode) + "] " + errorMessage);
 }
 
+void MainWindow::onMessageArrived(const QString &topic, const QString &message)
+{
+    addLog("Message arrived: [" + topic + "] " + message);
+}
+
+void MainWindow::onDeliveryComplete(int id)
+{
+    addLog("Delivery for message " + QString::number(id) + " complete.");
+}
+
+void MainWindow::onConnectionLost(const QString &cause)
+{
+    addLog("Connection lost: " + cause);
+}
+
 void MainWindow::createConnection(QString name, QString broker, int port)
 {
     if(name.isEmpty() || broker.isEmpty()) {
