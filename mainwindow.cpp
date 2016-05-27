@@ -26,7 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_connectActionCallback("Connect"),
     m_disconnectActionCallback("Disconnect"),
-    m_publishActionCallback("Publish")
+    m_publishActionCallback("Publish"),
+    m_subscribeActionCallback("Subscribe"),
+    m_unsubscribeActionCallback("Unsubscribe")
 {
     ui->setupUi(this);
 
@@ -38,6 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QShortcut *publishShortcut =
             new QShortcut(QKeySequence(tr("Ctrl+P", "publish")), this);
     connect(publishShortcut, &QShortcut::activated, this, &MainWindow::onTestPublish);
+
+    QShortcut *subscribeShortcut =
+            new QShortcut(QKeySequence(tr("Ctrl+S", "subscribe")), this);
+    connect(subscribeShortcut, &QShortcut::activated, this, &MainWindow::onTestSubscribe);
+
+    QShortcut *unsubscribeShortcut =
+            new QShortcut(QKeySequence(tr("Ctrl+U", "unsubscribe")), this);
+    connect(unsubscribeShortcut, &QShortcut::activated, this, &MainWindow::onTestUnsubscribe);
 
     // connect the menu entries:
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
@@ -56,7 +66,14 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::onSuccess);
     connect(&m_connectActionCallback, &linquitto::DefaultActionCallback::failure,
             this, &MainWindow::onFailure);
+    connect(&m_eventCallback, &linquitto::DefaultEventCallback::connectionLost,
+            this, &MainWindow::onConnectionLost);
+    connect(&m_eventCallback, &linquitto::DefaultEventCallback::deliveryComplete,
+            this, &MainWindow::onDeliveryComplete);
+    connect(&m_eventCallback, &linquitto::DefaultEventCallback::messageArrived,
+            this, &MainWindow::onMessageArrived);
 
+    m_pclient.setCallback(m_eventCallback);
 }
 
 MainWindow::~MainWindow()
@@ -123,6 +140,26 @@ void MainWindow::onTestPublish()
         m_pclient.publish("Test", message, responseOptions);
     } else {
         qDebug() << "Can't publish. Not connected!";
+    }
+}
+
+void MainWindow::onTestSubscribe()
+{
+    qDebug() << "Subcribe with protectable connection.";
+    if(m_pclient.isConnected()) {
+        linquitto::ResponseOptions responseOptions;
+        responseOptions.setActionCallback(&m_subscribeActionCallback);
+        m_pclient.subscribe("Test", 1, responseOptions);
+    }
+}
+
+void MainWindow::onTestUnsubscribe()
+{
+    qDebug() << "Unsubscribe with protectable connection.";
+    if(m_pclient.isConnected()) {
+        linquitto::ResponseOptions responseOptions;
+        responseOptions.setActionCallback(&m_unsubscribeActionCallback);
+        m_pclient.unsubscribe("Test", responseOptions);
     }
 }
 

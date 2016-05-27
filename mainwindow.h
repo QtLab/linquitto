@@ -8,6 +8,7 @@
 #include "asyncconnection.h"
 #include "protectableasyncclient.h"
 #include "defaultactioncallback.h"
+#include "defaulteventcallback.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,8 @@ public slots:
     void onCreateConnection();
     void onTestConnection();
     void onTestPublish();
+    void onTestSubscribe();
+    void onTestUnsubscribe();
     void closeTab(int index);
 
     void onSuccess();
@@ -51,6 +54,9 @@ private:
     linquitto::DefaultActionCallback m_connectActionCallback;
     linquitto::DefaultActionCallback m_disconnectActionCallback;
     linquitto::DefaultActionCallback m_publishActionCallback;
+    linquitto::DefaultActionCallback m_subscribeActionCallback;
+    linquitto::DefaultActionCallback m_unsubscribeActionCallback;
+    linquitto::DefaultEventCallback m_eventCallback;
 };
 
 #endif // MAINWINDOW_H
