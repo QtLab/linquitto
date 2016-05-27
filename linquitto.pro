@@ -27,7 +27,6 @@ SOURCES += main.cpp\
     connectoptions.cpp \
     protectableasyncclient.cpp \
     disconnectoptions.cpp \
-    actioncallback.cpp \
     defaultactioncallback.cpp \
     tools.cpp \
     message.cpp \

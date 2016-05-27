@@ -8,7 +8,6 @@ namespace linquitto {
 class ActionCallback
 {
 public:
-    ActionCallback();
     virtual ~ActionCallback() {}
 
     /*!
