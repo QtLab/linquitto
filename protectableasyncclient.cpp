@@ -55,7 +55,10 @@ void ProtectableAsyncClient::setCallback(EventCallback &callback)
 
 void ProtectableAsyncClient::connect(const ConnectOptions &connOpt)
 {
-    MQTTAsync_connect(m_handle, connOpt.getRawOptions());
+    int code = MQTTAsync_connect(m_handle, connOpt.getRawOptions());
+    if(code > 0) {
+        qDebug() << "Can't connect! An error occured. [" << code << "]";
+    }
 }
 
 void ProtectableAsyncClient::disconnect(const DisconnectOptions &disconnOpt)

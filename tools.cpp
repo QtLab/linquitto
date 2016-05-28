@@ -20,7 +20,11 @@ void linquitto::tools::actionCallback_onFailure(void *context, MQTTAsync_failure
 {
     if(context != nullptr) {
         ActionCallback *callback = static_cast<ActionCallback*>(context);
-        callback->onFailure(data->code, QString(data->message));
+        if(data != nullptr) {
+            callback->onFailure(data->code, QString(data->message));
+        } else {
+            callback->onFailure(-1, "Unknown error!");
+        }
     } else {
         qDebug() << "context was empty.";
     }
@@ -48,8 +52,16 @@ int tools::messageArrivedCallback(void *context,
 {
     if(context != nullptr) {
         EventCallback *callback = static_cast<EventCallback*>(context);
-        QString topic = topicName;
-        QByteArray payload = static_cast<char*>(message->payload);
+        QString topic;
+        if(topicName != nullptr) {
+            topic = topicName;
+        } else {
+            topic = "unknown";
+        }
+        QByteArray payload;
+        if(message != nullptr) {
+            payload = static_cast<char*>(message->payload);
+        }
         QString msg(payload);
         callback->onMessageArrived(topic, msg);
     } else {
