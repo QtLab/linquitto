@@ -18,19 +18,21 @@ public:
 
     // AsyncClient interface
 public:
-    bool isConnected() const;
-    QString getClientId() const;
-    void setCallback(EventCallback &callback);
-    void connect(const ConnectOptions &connOpt);
-    void disconnect(const DisconnectOptions &disconnOpt);
-    void publish(const QString &topic, const Message &message, ResponseOptions &responseOpt);
-    void subscribe(const QString &topic, int qos,  ResponseOptions &responseOpt);
-    void unsubscribe(const QString &topic,  ResponseOptions &responseOpt);
+    bool isConnected() const override;
+    QString getClientId() const override;
+    QString getBrokerUrl() const override;
+    void setCallback(EventCallback &callback) override;
+    void connect(const ConnectOptions &connOpt) override;
+    void disconnect(const DisconnectOptions &disconnOpt) override;
+    void publish(const QString &topic, const Message &message, ResponseOptions &responseOpt) override;
+    void subscribe(const QString &topic, int qos,  ResponseOptions &responseOpt) override;
+    void unsubscribe(const QString &topic,  ResponseOptions &responseOpt) override;
 
 private:
 
 private:
     MQTTAsync m_handle;
+    QString m_brokerUrl;
     QString m_clientID;
 };
 

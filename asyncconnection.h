@@ -28,10 +28,13 @@ public:
     void unsubscribeFromTopic(QString const &topic);
     bool isConnectedWithServer() const {return m_client->isConnected();}
     QString getClientId() const {return m_client->getClientId();}
+    QString getBrokerUrl() const {return m_client->getBrokerUrl();}
 
 signals:
     void connected();
+    void connectFailed(const QString &cause);
     void disconnected();
+    void disconnectFailed(const QString &cause);
     void published();
     void subscribed(const QString &topic);
     void unsubscribed(const QString &topic);

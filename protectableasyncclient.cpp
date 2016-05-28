@@ -13,6 +13,7 @@ ProtectableAsyncClient::ProtectableAsyncClient():
 ProtectableAsyncClient::ProtectableAsyncClient(const QString &broker,
                                                const QString &name) :
     m_handle(nullptr),
+    m_brokerUrl(broker),
     m_clientID(name)
 {
     int ret = MQTTAsync_create(&m_handle,
@@ -43,6 +44,11 @@ bool ProtectableAsyncClient::isConnected() const
 QString ProtectableAsyncClient::getClientId() const
 {
     return m_clientID;
+}
+
+QString ProtectableAsyncClient::getBrokerUrl() const
+{
+    return m_brokerUrl;
 }
 
 void ProtectableAsyncClient::setCallback(EventCallback &callback)
