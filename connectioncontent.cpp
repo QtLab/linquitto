@@ -118,7 +118,11 @@ void ConnectionContent::connectionEstablished()
     ui->disconnectButton->setEnabled(true);
     ui->subscribeButton->setEnabled(true);
     ui->publishButton->setEnabled(true);
-    emit log("Connected with Server.");
+
+    QString logMessage = QString("[%1] Connected with %2")
+            .arg(m_connection.getClientId())
+            .arg(m_connection.getBrokerUrl());
+    emit log(logMessage);
 }
 
 void ConnectionContent::onConnectFailed(int errorCode, const QString &errorMessage)
@@ -142,8 +146,11 @@ void ConnectionContent::disconnected()
     ui->subscribeTopicEdit->clear();
     ui->publishTopicEdit->clear();
     ui->publishPayloadEdit->clear();
-    emit log("Disconnected from Server.");
 
+    QString logMessage = QString("[%1] Disconnected from %2")
+            .arg(m_connection.getClientId())
+            .arg(m_connection.getBrokerUrl());
+    emit log(logMessage);
 }
 
 void ConnectionContent::onDisconnectFailed(int errorCode, const QString &errorMessage)
@@ -160,7 +167,13 @@ void ConnectionContent::connectionHasPublished()
 {
     const QString topic = ui->publishTopicEdit->text();
     const QString message = ui->publishPayloadEdit->text();
-    emit log(message + " was published on " + topic);
+
+    QString logMessage = QString("[%1] Message \"%2\" published for topic \"%3\" on %4")
+            .arg(m_connection.getClientId())
+            .arg(message)
+            .arg(topic)
+            .arg(m_connection.getBrokerUrl());
+    emit log(logMessage);
 }
 
 void ConnectionContent::onPublishFailed(int errorCode, const QString &errorMessage)
@@ -175,10 +188,15 @@ void ConnectionContent::onPublishFailed(int errorCode, const QString &errorMessa
 
 void ConnectionContent::connectionHasSubscribed(const QString &topic)
 {
-    emit log("Subscribed to topic " + topic);
     qDebug() << "ConnectionContent::connectionHasSubscribed: " << topic;
     ui->subscriptionsCombo->addItem(topic);
     ui->unsubscribeButton->setEnabled(true);
+
+    QString logMessage = QString("[%1] Subscribed to topic \"%2\" on %3")
+            .arg(m_connection.getClientId())
+            .arg(topic)
+            .arg(m_connection.getBrokerUrl());
+    emit log(logMessage);
 }
 
 void ConnectionContent::onSubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage)
@@ -194,7 +212,6 @@ void ConnectionContent::onSubscribeFailed(const QString &topic, int errorCode, c
 
 void ConnectionContent::connectionHasUnsubscribed(const QString &topic)
 {
-    emit log("Unsubscribed from topic " + topic);
     int index = ui->subscriptionsCombo->findText(topic, Qt::MatchExactly);
     if(index > -1) {
         ui->subscriptionsCombo->removeItem(index);
@@ -203,6 +220,12 @@ void ConnectionContent::connectionHasUnsubscribed(const QString &topic)
         // When there is nothing to unsubscribe from, disable the button.
         ui->unsubscribeButton->setEnabled(false);
     }
+
+    QString logMessage = QString("[%1] Unsubscribed from topic \"%2\" on %3")
+            .arg(m_connection.getClientId())
+            .arg(topic)
+            .arg(m_connection.getBrokerUrl());
+    emit log(logMessage);
 }
 
 void ConnectionContent::onUnsubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage)
@@ -218,11 +241,16 @@ void ConnectionContent::onUnsubscribeFailed(const QString &topic, int errorCode,
 
 void ConnectionContent::connectionLost(QString cause)
 {
-    emit log("Connection lost: " + cause);
     ui->connectButton->setEnabled(true);
     ui->disconnectButton->setEnabled(false);
     ui->subscribeButton->setEnabled(false);
     ui->publishButton->setEnabled(false);
+
+    QString logMessage = QString("[%1] Connection to %2 lost: %3")
+            .arg(m_connection.getClientId())
+            .arg(m_connection.getBrokerUrl())
+            .arg(cause);
+    emit log(logMessage);
 }
 
 void ConnectionContent::messageArrived(QString topic, QString message)
