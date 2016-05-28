@@ -3,15 +3,11 @@
 
 #include <QObject>
 
-#include <mqtt/async_client.h>
-
-#include "defaultactionlistener.h"
-#include "unsubscribeactionlistener.h"
-#include "defaultcallback.h"
 #include "protectableasyncclient.h"
 #include "defaulteventcallback.h"
 #include "defaultactioncallback.h"
 #include "subscriptionactioncallback.h"
+#include "makeunique.h"
 
 class AsyncConnection : public QObject
 {

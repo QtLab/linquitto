@@ -1,6 +1,8 @@
 #ifndef MAKEUNIQUE
 #define MAKEUNIQUE
 
+#include <memory>
+
 namespace linquitto {
 
 /*

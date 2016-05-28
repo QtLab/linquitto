@@ -5,8 +5,6 @@
 #include <QUrl>
 #include <QShortcut>
 
-#include "mqtt/async_client.h"
-
 #include "makeunique.h"
 #include "createconnectiondialog.h"
 #include "connectioncontent.h"
