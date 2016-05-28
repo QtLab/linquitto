@@ -15,7 +15,6 @@ public:
     ProtectableAsyncClient(const QString &broker, const QString &name);
     ~ProtectableAsyncClient();
 
-
     // AsyncClient interface
 public:
     bool isConnected() const override;
@@ -27,8 +26,6 @@ public:
     void publish(const QString &topic, const Message &message, ResponseOptions &responseOpt) override;
     void subscribe(const QString &topic, int qos,  ResponseOptions &responseOpt) override;
     void unsubscribe(const QString &topic,  ResponseOptions &responseOpt) override;
-
-private:
 
 private:
     MQTTAsync m_handle;

@@ -18,14 +18,29 @@ AsyncConnection::AsyncConnection(std::unique_ptr<ProtectableAsyncClient> client,
 {
     connect(&m_connectActionCallback, &DefaultActionCallback::success,
             this, &AsyncConnection::connected);
+    connect(&m_connectActionCallback, &DefaultActionCallback::failure,
+            this, &AsyncConnection::connectFailed);
+
     connect(&m_disconnectActionCallback, &DefaultActionCallback::success,
             this, &AsyncConnection::disconnected);
+    connect(&m_disconnectActionCallback, &DefaultActionCallback::failure,
+            this, &AsyncConnection::disconnectFailed);
+
     connect(&m_publishActionCallback, &DefaultActionCallback::success,
             this, &AsyncConnection::published);
+    connect(&m_publishActionCallback, &DefaultActionCallback::failure,
+            this, &AsyncConnection::publishFailed);
+
     connect(&m_subscribeActionCallback, &SubscriptionActionCallback::success,
             this, &AsyncConnection::subscribed);
+    connect(&m_subscribeActionCallback, &SubscriptionActionCallback::failure,
+            this, &AsyncConnection::subscribeFailed);
+
     connect(&m_unsubscribeActionCallback, &SubscriptionActionCallback::success,
             this, &AsyncConnection::unsubscribed);
+    connect(&m_unsubscribeActionCallback, &SubscriptionActionCallback::failure,
+            this, &AsyncConnection::unsubscribeFailed);
+
     connect(&m_callback, &DefaultEventCallback::connectionLost,
             this, &AsyncConnection::connectionLost);
     connect(&m_callback, &DefaultEventCallback::messageArrived,

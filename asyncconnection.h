@@ -32,12 +32,15 @@ public:
 
 signals:
     void connected();
-    void connectFailed(const QString &cause);
+    void connectFailed(int errorCode, const QString &errorMessage);
     void disconnected();
-    void disconnectFailed(const QString &cause);
+    void disconnectFailed(int errorCode, const QString &errorMessage);
     void published();
+    void publishFailed(int errorCode, const QString &errorMessage);
     void subscribed(const QString &topic);
+    void subscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
     void unsubscribed(const QString &topic);
+    void unsubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
     void messageArrived(QString topic, QString message);
     void connectionLost(QString cause);
 

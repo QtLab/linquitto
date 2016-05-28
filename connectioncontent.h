@@ -28,11 +28,22 @@ public slots:
     void onPublish();
     void onSubscribe();
     void onUnsubscribe();
+
     void connectionEstablished();
+    void onConnectFailed(int errorCode, const QString &errorMessage);
+
     void disconnected();
+    void onDisconnectFailed(int errorCode, const QString &errorMessage);
+
     void connectionHasPublished();
+    void onPublishFailed(int errorCode, const QString &errorMessage);
+
     void connectionHasSubscribed(const QString &topic);
+    void onSubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
+
     void connectionHasUnsubscribed(const QString &topic);
+    void onUnsubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
+
     void connectionLost(QString cause);
     void messageArrived(QString topic, QString message);
 
