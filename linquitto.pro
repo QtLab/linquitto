@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     message.cpp \
     responseoptions.cpp \
     defaulteventcallback.cpp \
-    subscriptionactioncallback.cpp
+    subscriptionactioncallback.cpp \
+    ssloptions.cpp
 
 HEADERS  += mainwindow.h \
     asyncconnection.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     responseoptions.h \
     eventcallback.h \
     defaulteventcallback.h \
-    subscriptionactioncallback.h
+    subscriptionactioncallback.h \
+    ssloptions.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \

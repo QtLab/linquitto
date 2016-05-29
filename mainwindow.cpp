@@ -90,7 +90,7 @@ void MainWindow::createConnection(QString name, QString broker, int port)
     if(name.isEmpty() || broker.isEmpty()) {
         return;
     }
-    QString brokerString = "tcp://" + broker + ":" + QString::number(port);
+    QString brokerString = "ssl://" + broker + ":" + QString::number(port);
     QUrl url(brokerString);
     if(url.isValid()) {
         qDebug() << "Valid url.";
