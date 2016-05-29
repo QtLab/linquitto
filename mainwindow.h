@@ -35,7 +35,7 @@ public slots:
     void closeTab(int index);
 
 private:
-    void createConnection(QString name, QString broker, int port);
+    void createConnection(QString name, QString broker, int port, bool sslEnabled);
     bool isUniqueTabName(QString name);
 
 private:

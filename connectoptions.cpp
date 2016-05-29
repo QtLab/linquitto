@@ -64,9 +64,9 @@ void ConnectOptions::setPassword(const QString &password)
     m_opts.password = m_password.c_str();
 }
 
-void ConnectOptions::setSSLOptions(MQTTAsync_SSLOptions *sslOptions)
+void ConnectOptions::setSSLOptions(SSLOptions &sslOptions)
 {
-    m_opts.ssl = sslOptions;
+    m_opts.ssl = sslOptions.getRawOptions();
 }
 
 void ConnectOptions::setActionCallback(ActionCallback *callback)

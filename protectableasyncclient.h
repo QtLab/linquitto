@@ -20,6 +20,7 @@ public:
     bool isConnected() const override;
     QString getClientId() const override;
     QString getBrokerUrl() const override;
+    bool sslEnabled() const override;
     void setCallback(EventCallback &callback) override;
     void connect(const ConnectOptions &connOpt) override;
     void disconnect(const DisconnectOptions &disconnOpt) override;

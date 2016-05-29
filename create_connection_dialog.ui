@@ -107,6 +107,19 @@
     </rect>
    </property>
   </widget>
+  <widget class="QCheckBox" name="sslCheckBox">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>160</y>
+     <width>97</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>SSL/TSL</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>

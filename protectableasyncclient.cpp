@@ -51,6 +51,11 @@ QString ProtectableAsyncClient::getBrokerUrl() const
     return m_brokerUrl;
 }
 
+bool ProtectableAsyncClient::sslEnabled() const
+{
+    return m_brokerUrl.startsWith("ssl");
+}
+
 void ProtectableAsyncClient::setCallback(EventCallback &callback)
 {
     MQTTAsync_setCallbacks(m_handle, &callback,

@@ -7,6 +7,7 @@ extern "C" {
 
 #include <QString>
 #include <list>
+#include "ssloptions.h"
 
 namespace linquitto {
 
@@ -25,7 +26,7 @@ public:
     void setWillOptions(MQTTAsync_willOptions *willOptions);
     void setUsername(const QString &username);
     void setPassword(const QString &password);
-    void setSSLOptions(MQTTAsync_SSLOptions *sslOptions);
+    void setSSLOptions(SSLOptions &sslOptions);
     void setActionCallback(ActionCallback *callback);
     void setServerURIs(std::list<QString> &serverURIs);
 

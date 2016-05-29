@@ -19,6 +19,7 @@ public:
     virtual bool isConnected() const = 0;
     virtual QString getClientId() const = 0;
     virtual QString getBrokerUrl() const = 0;
+    virtual bool sslEnabled() const = 0;
 
     virtual void setCallback(EventCallback &callback) = 0;
 

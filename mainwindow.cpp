@@ -74,7 +74,9 @@ void MainWindow::onCreateConnection()
     qDebug() << "name=" << dialog.getName();
     qDebug() << "broker=" << dialog.getBroker();
     qDebug() << "port=" << dialog.getPort();
-    createConnection(dialog.getName(), dialog.getBroker(), dialog.getPort());
+    qDebug() << "ssl=" << dialog.sslEnabled();
+    createConnection(dialog.getName(), dialog.getBroker(),
+                     dialog.getPort(), dialog.sslEnabled());
 }
 
 void MainWindow::closeTab(int index)
@@ -85,12 +87,16 @@ void MainWindow::closeTab(int index)
     }
 }
 
-void MainWindow::createConnection(QString name, QString broker, int port)
+void MainWindow::createConnection(QString name, QString broker,
+                                  int port, bool sslEnabled)
 {
     if(name.isEmpty() || broker.isEmpty()) {
         return;
     }
-    QString brokerString = "ssl://" + broker + ":" + QString::number(port);
+
+    QString brokerString = (sslEnabled ? QString("ssl://") : QString("tcp://"))
+            + broker + ":" + QString::number(port);
+    qDebug() << brokerString;
     QUrl url(brokerString);
     if(url.isValid()) {
         qDebug() << "Valid url.";
@@ -109,7 +115,6 @@ void MainWindow::createConnection(QString name, QString broker, int port)
         addLog("Connection name \"" + name + "\" is not unique!");
         qDebug() << "MainWindow::createConnection: " << name << " is not unique!";
     }
-
 }
 
 bool MainWindow::isUniqueTabName(QString name)

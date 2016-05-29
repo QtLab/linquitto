@@ -57,6 +57,11 @@ AsyncConnection::~AsyncConnection()
 void AsyncConnection::connectWithServer()
 {
     linquitto::ConnectOptions connOptions;
+    linquitto::SSLOptions sslOptions;
+    if(m_client->sslEnabled()) {
+        sslOptions.setTrustStore("/etc/ssl/certs/mosquitto.crt");
+        connOptions.setSSLOptions(sslOptions);
+    }
     connOptions.setActionCallback(&m_connectActionCallback);
     if(m_client->isConnected()) {
         qDebug() << "AsyncConnection::connectWithServer: already connected!";

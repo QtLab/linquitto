@@ -7,6 +7,8 @@ CreateConnectionDialog::CreateConnectionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->sslCheckBox, &QCheckBox::stateChanged,
+            this, &CreateConnectionDialog::onStateChanged);
 }
 
 QString CreateConnectionDialog::getBroker() const
@@ -22,5 +24,19 @@ QString CreateConnectionDialog::getName() const
 int CreateConnectionDialog::getPort() const
 {
     return ui->portSpinner->value();
+}
+
+bool CreateConnectionDialog::sslEnabled() const
+{
+    return ui->sslCheckBox->isChecked();
+}
+
+void CreateConnectionDialog::onStateChanged(int state)
+{
+    if(state == Qt::Checked) {
+        ui->portSpinner->setValue(8883);
+    } else {
+        ui->portSpinner->setValue(1883);
+    }
 }
 

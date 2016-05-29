@@ -15,10 +15,14 @@ public:
     QString getBroker() const;
     QString getName() const;
     int getPort() const;
+    bool sslEnabled() const;
 
 signals:
 
 public slots:
+
+private slots:
+    void onStateChanged(int state);
 
 private:
     Ui::CreateConnectionDialog *ui;
