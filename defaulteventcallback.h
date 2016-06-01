@@ -14,7 +14,7 @@ public:
     explicit DefaultEventCallback(QObject *parent = 0);
 
 signals:
-    void messageArrived(const QString &topic, const QString &message);
+    void messageArrived(const QString &topic, const QByteArray &message);
     void deliveryComplete(int id);
     void connectionLost(const QString &cause);
 
@@ -23,7 +23,7 @@ public slots:
 
     // EventCallback interface
 public:
-    void onMessageArrived(QString topic, QString message) override;
+    void onMessageArrived(QString topic, QByteArray payload) override;
     void onDeliveryComplete(int id) override;
     void onConnectionLost(QString cause) override;
 };

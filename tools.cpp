@@ -60,10 +60,11 @@ int tools::messageArrivedCallback(void *context,
         }
         QByteArray payload;
         if(message != nullptr) {
-            payload = static_cast<char*>(message->payload);
+            // using this overload of "append" because the payload can contain more then one \0
+            payload.append(static_cast<char*>(message->payload), message->payloadlen);
         }
-        QString msg(payload);
-        callback->onMessageArrived(topic, msg);
+        qDebug() << payload.length();
+        callback->onMessageArrived(topic, payload);
     } else {
         qDebug() << "context was empty.";
     }

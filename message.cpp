@@ -19,6 +19,14 @@ void Message::setPayload(const QString &payload)
     m_msg.payloadlen = m_payload.size() + includeZero;
 }
 
+void Message::setPayload(const QByteArray &payload)
+{
+    m_payload.clear();
+    m_payload.append(payload);
+    m_msg.payload = m_payload.data();
+    m_msg.payloadlen = m_payload.size();
+}
+
 void Message::setQualityOfService(int qos)
 {
     m_msg.qos = qos;

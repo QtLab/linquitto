@@ -97,6 +97,22 @@ void AsyncConnection::publishMessage(const QString &topic, const QString &messag
     }
 }
 
+void AsyncConnection::publishMessage(const QString &topic, const QByteArray &message)
+{
+    if(m_client->isConnected()) {
+        qDebug() << "AsyncConnection::sendMessage with Data.";
+        ResponseOptions responseOptions;
+        responseOptions.setActionCallback(&m_publishActionCallback);
+        Message msg;
+        msg.setPayload(message);
+        msg.setQualityOfService(1);
+        msg.setRetained(false);
+        m_client->publish(topic, msg, responseOptions);
+    } else {
+        qDebug() << "AsyncConnection::sendMessage: failed, not connected!";
+    }
+}
+
 void AsyncConnection::subscribeToTopic(const QString &topic)
 {
     if(m_client->isConnected()) {

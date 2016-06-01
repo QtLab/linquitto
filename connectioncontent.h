@@ -45,11 +45,12 @@ public slots:
     void onUnsubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
 
     void connectionLost(QString cause);
-    void messageArrived(QString topic, QString message);
+    void messageArrived(const QString &topic, const QByteArray &payload);
 
 private:
     void connectSignals();
     bool notAlreadySubscribed(const QString &topic) const;
+    void publishData();
 
 private:
     Ui::ConnectionContent *ui;

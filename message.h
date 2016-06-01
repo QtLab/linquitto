@@ -15,6 +15,7 @@ public:
     Message();
 
     void setPayload(const QString &payload);
+    void setPayload(const QByteArray &payload);
     void setQualityOfService(int qos);
     void setRetained(bool retained);
 

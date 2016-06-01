@@ -20,6 +20,7 @@ public:
     void connectWithServer();
     void disconnectFromServer();
     void publishMessage(QString const &topic, QString const &message);
+    void publishMessage(QString const &topic, QByteArray const &message);
     void subscribeToTopic(QString const &topic);
     void unsubscribeFromTopic(QString const &topic);
     bool isConnectedWithServer() const {return m_client->isConnected();}
@@ -37,7 +38,7 @@ signals:
     void subscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
     void unsubscribed(const QString &topic);
     void unsubscribeFailed(const QString &topic, int errorCode, const QString &errorMessage);
-    void messageArrived(QString topic, QString message);
+    void messageArrived(QString topic, const QByteArray &message);
     void connectionLost(QString cause);
 
 public slots:

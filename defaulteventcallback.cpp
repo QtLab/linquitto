@@ -6,9 +6,9 @@ DefaultEventCallback::DefaultEventCallback(QObject *parent) :
     QObject(parent)
 {}
 
-void DefaultEventCallback::onMessageArrived(QString topic, QString message)
+void DefaultEventCallback::onMessageArrived(QString topic, QByteArray payload)
 {
-    emit messageArrived(topic, message);
+    emit messageArrived(topic, payload);
 }
 
 void DefaultEventCallback::onDeliveryComplete(int id)

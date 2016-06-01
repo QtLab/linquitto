@@ -1,6 +1,7 @@
 #include "connectioncontent.h"
 #include "ui_connectioncontent.h"
 #include "makeunique.h"
+#include "data.h"
 
 #include <QDebug>
 
@@ -67,8 +68,12 @@ void ConnectionContent::onPublish()
         return;
     }
 
-    // publish only when topic and message are filled
-    m_connection.publishMessage(topic, message);
+    if(topic == "data") {
+        publishData();
+    } else {
+        // publish only when topic and message are filled
+        m_connection.publishMessage(topic, message);
+    }
 }
 
 void ConnectionContent::onSubscribe()
@@ -253,9 +258,20 @@ void ConnectionContent::connectionLost(QString cause)
     emit log(logMessage);
 }
 
-void ConnectionContent::messageArrived(QString topic, QString message)
+void ConnectionContent::messageArrived(const QString &topic, const QByteArray &payload)
 {
-    ui->subscriptionMessages->addItem("[" + topic + "]: " + message);
+    qDebug() << "ConnectionContent::messageArrived lenght =" << payload.length();
+    if(topic == "data") {
+        Data data("Test",0,0.0);
+        data.printOut();
+        QByteArray pld(payload);
+        QDataStream out(&pld, QIODevice::ReadOnly);
+        data.deserialize(out);
+        data.printOut();
+        ui->subscriptionMessages->addItem("[" + topic + "]: " + data.toString());
+    } else {
+        ui->subscriptionMessages->addItem("[" + topic + "]: " + payload);
+    }
 }
 
 void ConnectionContent::connectSignals()
@@ -296,4 +312,15 @@ void ConnectionContent::connectSignals()
 bool ConnectionContent::notAlreadySubscribed(const QString &topic) const
 {
     return ui->subscriptionsCombo->findText(topic, Qt::MatchExactly) == -1;
+}
+
+void ConnectionContent::publishData()
+{
+    Data data("Test", 5, 7.8987);
+    qDebug() << "Before serialization:";
+    data.printOut();
+    QByteArray message;
+    QDataStream in(&message, QIODevice::WriteOnly);
+    data.serialize(in);
+    m_connection.publishMessage("data", message);
 }

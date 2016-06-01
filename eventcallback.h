@@ -18,7 +18,7 @@ public:
      * Implementations should consider that it will very probably
      * run on a different thread than the UI.
      */
-    virtual void onMessageArrived(QString topic, QString message) = 0;
+    virtual void onMessageArrived(QString topic, QByteArray payload) = 0;
 
     /*!
      * \brief onDeliveryComplete will be called when a delivery is complete
