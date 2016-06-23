@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     defaulteventcallback.cpp \
     subscriptionactioncallback.cpp \
     ssloptions.cpp \
-    data.cpp
+    data.cpp \
+    temperaturesimulator.cpp
 
 HEADERS  += mainwindow.h \
     asyncconnection.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     defaulteventcallback.h \
     subscriptionactioncallback.h \
     ssloptions.h \
-    data.h
+    data.h \
+    temperaturesimulator.h
 
 FORMS    += mainwindow.ui \
     create_connection_dialog.ui \

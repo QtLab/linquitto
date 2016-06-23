@@ -19,8 +19,8 @@ void Data::serialize(QDataStream &stream) const
 
 void Data::deserialize(QDataStream &stream)
 {
-    QString temp;
     stream >> m_qstring;
+    QString temp;
     stream >> temp;
     stream >> m_integer;
     stream >> m_double;

@@ -123,6 +123,7 @@ void ConnectionContent::connectionEstablished()
     ui->disconnectButton->setEnabled(true);
     ui->subscribeButton->setEnabled(true);
     ui->publishButton->setEnabled(true);
+    ui->simulateCheckBox->setEnabled(true);
 
     QString logMessage = QString("[%1] Connected with %2")
             .arg(m_connection.getClientId())
@@ -147,6 +148,7 @@ void ConnectionContent::disconnected()
     ui->subscribeButton->setEnabled(false);
     ui->unsubscribeButton->setEnabled(false);
     ui->publishButton->setEnabled(false);
+    ui->simulateCheckBox->setEnabled(false);
     ui->subscriptionsCombo->clear();
     ui->subscribeTopicEdit->clear();
     ui->publishTopicEdit->clear();
@@ -250,6 +252,7 @@ void ConnectionContent::connectionLost(QString cause)
     ui->disconnectButton->setEnabled(false);
     ui->subscribeButton->setEnabled(false);
     ui->publishButton->setEnabled(false);
+    ui->simulateCheckBox->setEnabled(false);
 
     QString logMessage = QString("[%1] Connection to %2 lost: %3")
             .arg(m_connection.getClientId())
@@ -271,6 +274,14 @@ void ConnectionContent::messageArrived(const QString &topic, const QByteArray &p
         ui->subscriptionMessages->addItem("[" + topic + "]: " + data.toString());
     } else {
         ui->subscriptionMessages->addItem("[" + topic + "]: " + payload);
+    }
+}
+
+void ConnectionContent::onTimerUpdate()
+{
+    if(ui->simulateCheckBox->isChecked()) {
+        QString newTemperature = m_tempSim.getNewValue();
+        m_connection.publishMessage("temperature", newTemperature);
     }
 }
 

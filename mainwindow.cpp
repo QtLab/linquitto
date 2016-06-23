@@ -106,10 +106,15 @@ void MainWindow::createConnection(QString name, QString broker,
     }
 
     if(isUniqueTabName(name)) {
+        if(!timer.isActive()) {
+            timer.start(1000);
+            qDebug() << "Timer started.";
+        }
         ConnectionContent *content = new ConnectionContent(brokerString, name);
         content->setObjectName(name + "_ConnectionContent");
         int tabIndex = ui->tabWidget->addTab(content, name);
         connect(content, &ConnectionContent::log, this, &MainWindow::addLog);
+        connect(&timer, &QTimer::timeout, content, &ConnectionContent::onTimerUpdate);
         ui->tabWidget->setCurrentIndex(tabIndex);
     } else {
         addLog("Connection name \"" + name + "\" is not unique!");

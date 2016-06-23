@@ -5,6 +5,7 @@
 
 #include "asyncconnection.h"
 #include "protectableasyncclient.h"
+#include "temperaturesimulator.h"
 
 namespace Ui {
 class ConnectionContent;
@@ -46,6 +47,7 @@ public slots:
 
     void connectionLost(QString cause);
     void messageArrived(const QString &topic, const QByteArray &payload);
+    void onTimerUpdate();
 
 private:
     void connectSignals();
@@ -55,6 +57,7 @@ private:
 private:
     Ui::ConnectionContent *ui;
     AsyncConnection m_connection;
+    TemperatureSimulator m_tempSim;
 };
 
 #endif // CONNECTIONCONTENT_H
