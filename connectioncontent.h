@@ -53,6 +53,7 @@ private:
     void connectSignals();
     bool notAlreadySubscribed(const QString &topic) const;
     void publishData();
+    void setTemperature(const QByteArray &payload);
 
 private:
     Ui::ConnectionContent *ui;

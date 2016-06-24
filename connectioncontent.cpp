@@ -272,6 +272,8 @@ void ConnectionContent::messageArrived(const QString &topic, const QByteArray &p
         data.deserialize(out);
         data.printOut();
         ui->subscriptionMessages->addItem("[" + topic + "]: " + data.toString());
+    } else if(topic == "temperature") {
+        setTemperature(payload);
     } else {
         ui->subscriptionMessages->addItem("[" + topic + "]: " + payload);
     }
@@ -334,4 +336,11 @@ void ConnectionContent::publishData()
     QDataStream in(&message, QIODevice::WriteOnly);
     data.serialize(in);
     m_connection.publishMessage("data", message);
+}
+
+void ConnectionContent::setTemperature(const QByteArray &payload)
+{
+    QString temperature(payload);
+    temperature.append("°C");
+    ui->temperatureLabel->setText(temperature);
 }
